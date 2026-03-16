@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://d3bgcl5avd3qe"]
+
+[ext_resource type="PackedScene" uid="uid://dtwheaff3qch7" path="res://Scenes/player.tscn" id="1_d7bho"]
+[ext_resource type="PackedScene" uid="uid://ck2o87hv8ojnr" path="res://Scripts/debug_ui.tscn" id="2_2b6ht"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_d7bho"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_y0mvb"]
+
+[node name="sandbox" type="Node3D" unique_id=1431519876]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1832161546]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1790237041]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=492858994]
+shape = SubResource("WorldBoundaryShape3D_d7bho")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=173236897]
+mesh = SubResource("PlaneMesh_y0mvb")
+
+[node name="Player" parent="." unique_id=789297989 instance=ExtResource("1_d7bho")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9341297, 0)
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=930912820]
+follow_viewport_enabled = true
+
+[node name="DebugUI" parent="UI" unique_id=110358034 node_paths=PackedStringArray("player") instance=ExtResource("2_2b6ht")]
+player = NodePath("../../Player")

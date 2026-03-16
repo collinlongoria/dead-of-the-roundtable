@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://ck2o87hv8ojnr"]
+
+[ext_resource type="Script" uid="uid://sks2mjhw2vhk" path="res://debug_ui.gd" id="1_rwcyu"]
+
+[node name="DebugUI" type="Control" unique_id=110358034]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_rwcyu")
+
+[node name="SpeedLabel" type="Label" parent="." unique_id=444931025]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 27.0
+offset_right = 202.0
+offset_bottom = 82.0

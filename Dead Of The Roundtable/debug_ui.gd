@@ -1,7 +1,6 @@
 extends Control
 
 @export var player: Node3D
-
 @onready var label: Label = $SpeedLabel
 
 func _process(_delta: float) -> void:
@@ -15,18 +14,16 @@ func _process(_delta: float) -> void:
 	var horizontal_speed := Vector2(body.velocity.x, body.velocity.z).length()
 	var vertical_speed := body.velocity.y
 	
-	var state := "Idle"
-	if player.is_sliding:
-		state = "Sliding"
-	elif player.is_crouching:
-		state = "Crouching"
-	elif horizontal_speed > player.sprint_speed - 0.1:
-		state = "Sprinting"
-	elif horizontal_speed > 0.1:
-		state = "Walking"
+	var state_names := {
+		player.State.IDLE: "Idle",
+		player.State.WALK: "Walking",
+		player.State.SPRINT: "Sprinting",
+		player.State.CROUCH: "Crouching",
+		player.State.SLIDE: "Sliding",
+		player.State.AIR: "Air",
+	}
 	
-	if not body.is_on_floor():
-		state += " (Air)"
+	var state: String = state_names.get(player.state, "Unknown")
 	
 	label.text = "State: %s\nSpeed: %.1f\nVertical: %.1f\nSlide Speed: %.1f\nOn Floor: %s" % [
 		state,

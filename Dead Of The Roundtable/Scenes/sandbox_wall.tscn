@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://cpbteyfkwvte6"]
+
+[ext_resource type="Texture2D" uid="uid://bwyxnb2td5uun" path="res://Assets/Sprites/bad_wall.png" id="1_1danl"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o6n4s"]
+albedo_texture = ExtResource("1_1danl")
+texture_filter = 2
+
+[sub_resource type="QuadMesh" id="QuadMesh_snfw7"]
+material = SubResource("StandardMaterial3D_o6n4s")
+size = Vector2(1, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ab1o8"]
+
+[node name="SandboxWall" type="MeshInstance3D" unique_id=474105454]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("QuadMesh_snfw7")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=786318785]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=479165271]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, -0.5)
+shape = SubResource("BoxShape3D_ab1o8")

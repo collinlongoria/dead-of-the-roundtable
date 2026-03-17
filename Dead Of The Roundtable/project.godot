@@ -14,6 +14,10 @@ config/name="Dead Of The Roundtable"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
+[global_group]
+
+targets="Zombie Targets"
+
 [input]
 
 move_forward={

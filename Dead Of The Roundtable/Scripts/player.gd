@@ -1,25 +1,28 @@
-extends Node3D
+extends CharacterBody3D
 
 # Refs
-@onready var body: CharacterBody3D = $PlayerController
-@onready var camera: Camera3D = $PlayerController/PlayerCamera
-@onready var mesh: MeshInstance3D = $PlayerController/PlayerMesh
+@onready var camera: Camera3D = $PlayerCamera
+@onready var mesh: MeshInstance3D = $PlayerMesh
 
 # Params
-@export var walk_speed: float = 5.0
-@export var sprint_speed: float = 10.0
-@export var sprint_acceleration: float = 20.0
-@export var crouch_speed: float = 2.5
-@export var slide_speed_initial: float = 18.0
-@export var slide_friction: float = 18.0
-@export var slide_end_threshold: float = 2.0
-@export var mouse_sensitivity: float = 0.003
+@export var walk_speed: float = 5.0 # base walk speed
+@export var sprint_speed: float = 10.0 # max sprint speed
+@export var sprint_acceleration: float = 20.0 # sprint accel to max
+@export var crouch_speed: float = 2.5 # base crouch speed
+@export var slide_speed_initial: float = 18.0 # when the player slides, this is how fast it starts
+@export var slide_friction: float = 18.0 # friction for slowing slide
+@export var slide_end_threshold: float = 2.0 # how slow the player must be sliding for it to end
+@export var mouse_sensitivity: float = 0.003 # mouse sensitiivity multiplier
 
 # Camera Tilt Params
-@export var strafe_tilt_max: float = 1.5
-@export var forward_tilt_max: float = 0.3
-@export var tilt_lerp_speed: float = 8.0
-@export var crouch_camera_offset: float = 0.5
+@export var strafe_tilt_max: float = 1.5 # maximum amount camera will tilt (side to side)
+@export var forward_tilt_max: float = 0.3 # maximum amount camera will tilt (forward and back)
+@export var tilt_lerp_speed: float = 8.0 # speed to reach max tilt distance
+@export var crouch_camera_offset: float = 0.5 # amount the camera lowers when you crouch
+
+# Camera Bob Params
+@export var bob_frequency: float = 2.0 # how fast the head bobs
+@export var bob_amplitude: float = 0.08 # how far up and down the head bobs
 
 # State Machine Vars
 enum State { IDLE, WALK, SPRINT, CROUCH, SLIDE, AIR }
@@ -33,7 +36,7 @@ var slide_direction: Vector3 = Vector3.ZERO
 var original_camera_y: float = 0.0
 var sprint_toggled: bool = false
 var slide_just_ended: bool = false
-
+var bob_time: float = 0.0
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -49,30 +52,26 @@ func _unhandled_input(event: InputEvent) -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and event is InputEventMouseMotion:
-		body.rotate_y(-event.relative.x * mouse_sensitivity)
+		rotate_y(-event.relative.x * mouse_sensitivity)
 		camera.rotate_x(-event.relative.y * mouse_sensitivity)
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-85), deg_to_rad(85))
 
 
 func _physics_process(delta: float) -> void:
 	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
-	var on_floor := body.is_on_floor()
+	var on_floor := is_on_floor()
 
-	# sprint toggle
 	if Input.is_action_just_pressed("sprint"):
 		sprint_toggled = not sprint_toggled
 	if input_dir == Vector2.ZERO:
 		sprint_toggled = false
 
-	# gravity
 	if not on_floor:
-		body.velocity.y -= gravity * delta
+		velocity.y -= gravity * delta
 
-	# post-slide crouch suppression
 	if slide_just_ended and not Input.is_action_pressed("slide"):
 		slide_just_ended = false
 
-	# state transitions
 	var next_state := _determine_state(input_dir, on_floor)
 
 	if next_state != state:
@@ -80,34 +79,39 @@ func _physics_process(delta: float) -> void:
 		_enter_state(next_state, input_dir)
 		state = next_state
 
-	# movement
 	_process_state(delta, input_dir)
-
-	# camera tilt
 	_apply_camera_tilt(delta, input_dir)
 
-	# camera duck
+	# base Y target (handles crouching/sliding)
 	var ducking := state == State.SLIDE or state == State.CROUCH
-	var target_y := original_camera_y - crouch_camera_offset if ducking else original_camera_y
+	var base_target_y := original_camera_y - crouch_camera_offset if ducking else original_camera_y
+	
+	# camera bob logic
+	var bob_offset := 0.0
+	if on_floor and input_dir != Vector2.ZERO and state != State.SLIDE:
+		bob_time += delta * velocity.length() * bob_frequency
+		bob_offset = sin(bob_time) * bob_amplitude
+	else:
+		bob_time = 0.0
+	
+	# combine!
+	var target_y := base_target_y + bob_offset
 	camera.position.y = lerp(camera.position.y, target_y, 10.0 * delta)
 
-	body.move_and_slide()
+	move_and_slide()
 
 func _determine_state(input_dir: Vector2, on_floor: bool) -> State:
-	# slide cannot be canceled
 	if state == State.SLIDE:
-		if Vector2(body.velocity.x, body.velocity.z).length() < slide_end_threshold:
+		if Vector2(velocity.x, velocity.z).length() < slide_end_threshold:
 			return State.IDLE
 		return State.SLIDE
 
 	if not on_floor:
 		return State.AIR
 
-	# slide entry
 	if Input.is_action_just_pressed("slide") and sprint_toggled and input_dir != Vector2.ZERO and current_speed >= sprint_speed:
 		return State.SLIDE
 
-	# crouch hold
 	if Input.is_action_pressed("slide") and not slide_just_ended:
 		return State.CROUCH
 
@@ -123,7 +127,7 @@ func _enter_state(s: State, input_dir: Vector2) -> void:
 	match s:
 		State.SLIDE:
 			current_slide_speed = slide_speed_initial
-			slide_direction = (body.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+			slide_direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		State.IDLE:
 			current_speed = 0.0
 
@@ -150,19 +154,19 @@ func _process_state(delta: float, input_dir: Vector2) -> void:
 
 
 func _move_directed(delta: float, input_dir: Vector2, speed: float) -> void:
-	var direction := (body.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
-		body.velocity.x = direction.x * speed
-		body.velocity.z = direction.z * speed
+		velocity.x = direction.x * speed
+		velocity.z = direction.z * speed
 	else:
-		body.velocity.x = move_toward(body.velocity.x, 0, sprint_speed)
-		body.velocity.z = move_toward(body.velocity.z, 0, sprint_speed)
+		velocity.x = move_toward(velocity.x, 0, sprint_speed)
+		velocity.z = move_toward(velocity.z, 0, sprint_speed)
 
 
 func _move_slide(delta: float) -> void:
 	current_slide_speed = move_toward(current_slide_speed, 0.0, slide_friction * delta)
-	body.velocity.x = slide_direction.x * current_slide_speed
-	body.velocity.z = slide_direction.z * current_slide_speed
+	velocity.x = slide_direction.x * current_slide_speed
+	velocity.z = slide_direction.z * current_slide_speed
 
 
 func _target_speed_for(s: State) -> float:
@@ -173,21 +177,15 @@ func _target_speed_for(s: State) -> float:
 		_:            return 0.0
 
 func _apply_camera_tilt(delta: float, input_dir: Vector2) -> void:
-	# roll from strafing
 	var target_roll := deg_to_rad(-input_dir.x * strafe_tilt_max)
-
-	# nudge from forward/back movement
 	var target_pitch_offset := deg_to_rad(input_dir.y * forward_tilt_max)
 
-	# blend
 	var current_roll := camera.rotation.z
 	camera.rotation.z = lerp(current_roll, target_roll, tilt_lerp_speed * delta)
 
-	# pitch tilt
 	var pitch_tilt_current: float = camera.get_meta("pitch_tilt", 0.0) as float
 	var pitch_tilt_new: float = lerp(pitch_tilt_current, target_pitch_offset, tilt_lerp_speed * delta)
 
-	# remove old and apply new tilt
 	camera.rotation.x -= pitch_tilt_current
 	camera.rotation.x += pitch_tilt_new
 	camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-85), deg_to_rad(85))

@@ -4,19 +4,21 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f60y1"]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_v0iea"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v0iea"]
+albedo_color = Color(0.8012886, 0.6508887, 0.36889017, 1)
 
-[node name="Player" type="Node3D" unique_id=789297989]
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_v0iea"]
+material = SubResource("StandardMaterial3D_v0iea")
+
+[node name="PlayerController" type="CharacterBody3D" unique_id=755936255 groups=["targets"]]
 script = ExtResource("1_v0iea")
 
-[node name="PlayerController" type="CharacterBody3D" parent="." unique_id=755936255]
-
-[node name="PlayerCollider" type="CollisionShape3D" parent="PlayerController" unique_id=623920554]
+[node name="PlayerCollider" type="CollisionShape3D" parent="." unique_id=623920554]
 shape = SubResource("CapsuleShape3D_f60y1")
 
-[node name="PlayerMesh" type="MeshInstance3D" parent="PlayerController" unique_id=2014485207]
+[node name="PlayerMesh" type="MeshInstance3D" parent="." unique_id=2014485207]
 mesh = SubResource("CapsuleMesh_v0iea")
 
-[node name="PlayerCamera" type="Camera3D" parent="PlayerController" unique_id=919823836]
+[node name="PlayerCamera" type="Camera3D" parent="." unique_id=919823836]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
 current = true

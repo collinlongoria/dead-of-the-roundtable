@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ck2o87hv8ojnr"]
 
-[ext_resource type="Script" uid="uid://sks2mjhw2vhk" path="res://debug_ui.gd" id="1_rwcyu"]
+[ext_resource type="Script" uid="uid://sks2mjhw2vhk" path="res://Scripts/debug_ui.gd" id="1_rwcyu"]
 
 [node name="DebugUI" type="Control" unique_id=110358034]
 layout_mode = 3

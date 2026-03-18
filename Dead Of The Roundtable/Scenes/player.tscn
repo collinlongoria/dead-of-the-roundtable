@@ -22,3 +22,6 @@ mesh = SubResource("CapsuleMesh_v0iea")
 [node name="PlayerCamera" type="Camera3D" parent="." unique_id=919823836]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
 current = true
+
+[node name="SpellSpawnPoint" type="Marker3D" parent="PlayerCamera" unique_id=4784692]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45838293, -0.40876555, -0.44317544)

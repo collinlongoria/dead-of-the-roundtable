@@ -3,6 +3,7 @@ extends CharacterBody3D
 # Refs
 @onready var camera: Camera3D = $PlayerCamera
 @onready var mesh: MeshInstance3D = $PlayerMesh
+@onready var spell_spawn_point: Marker3D = $PlayerCamera/SpellSpawnPoint
 
 # Params
 @export var walk_speed: float = 5.0 # base walk speed
@@ -13,6 +14,9 @@ extends CharacterBody3D
 @export var slide_friction: float = 18.0 # friction for slowing slide
 @export var slide_end_threshold: float = 2.0 # how slow the player must be sliding for it to end
 @export var mouse_sensitivity: float = 0.003 # mouse sensitiivity multiplier
+
+# Spell Params
+@export var equipped_spell: SpellData
 
 # Camera Tilt Params
 @export var strafe_tilt_max: float = 1.5 # maximum amount camera will tilt (side to side)
@@ -37,6 +41,7 @@ var original_camera_y: float = 0.0
 var sprint_toggled: bool = false
 var slide_just_ended: bool = false
 var bob_time: float = 0.0
+var can_fire: bool = true
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -99,6 +104,8 @@ func _physics_process(delta: float) -> void:
 	camera.position.y = lerp(camera.position.y, target_y, 10.0 * delta)
 
 	move_and_slide()
+	
+	_handle_shooting()
 
 func _determine_state(input_dir: Vector2, on_floor: bool) -> State:
 	if state == State.SLIDE:
@@ -190,3 +197,33 @@ func _apply_camera_tilt(delta: float, input_dir: Vector2) -> void:
 	camera.rotation.x += pitch_tilt_new
 	camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-85), deg_to_rad(85))
 	camera.set_meta("pitch_tilt", pitch_tilt_new)
+
+func _handle_shooting() -> void:
+	if not equipped_spell:
+		return
+	if not can_fire:
+		return
+
+	var is_shooting = false
+	if equipped_spell.automatic:
+		is_shooting = Input.is_action_pressed("shoot")
+	else:
+		is_shooting = Input.is_action_just_pressed("shoot")
+
+	if is_shooting:
+		_cast_spell()
+
+func _cast_spell() -> void:
+	can_fire = false
+	
+	# spawn projectile
+	var projectile = equipped_spell.projectile_scene.instantiate()
+	get_tree().root.add_child(projectile)
+	projectile.global_transform = spell_spawn_point.global_transform
+	
+	if "damage" in projectile:
+		projectile.damage = equipped_spell.damage
+	
+	# start cooldown timer
+	var timer := get_tree().create_timer(equipped_spell.fire_rate)
+	timer.timeout.connect(func(): can_fire = true)

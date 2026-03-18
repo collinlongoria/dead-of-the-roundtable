@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://dn0h77o3w5pve"]
+
+[ext_resource type="Script" uid="uid://drio2w8dn8u24" path="res://Scripts/spell_data.gd" id="1_ajlup"]
+[ext_resource type="PackedScene" uid="uid://cq85x6ryq1343" path="res://Scenes/ice_shard.tscn" id="1_i3dpj"]
+
+[resource]
+script = ExtResource("1_ajlup")
+spell_name = "Ice Shard"
+damage = 20.0
+fire_rate = 0.3
+automatic = true
+projectile_scene = ExtResource("1_i3dpj")
+metadata/_custom_type_script = "uid://drio2w8dn8u24"

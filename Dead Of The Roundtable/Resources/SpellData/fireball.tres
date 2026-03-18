@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SpellData" format=3 uid="uid://c07j4mj04gbj0"]
+
+[ext_resource type="PackedScene" uid="uid://trwlac7ermtm" path="res://Scenes/fireball.tscn" id="1_527uf"]
+[ext_resource type="Script" uid="uid://drio2w8dn8u24" path="res://Scripts/spell_data.gd" id="1_n2bl7"]
+
+[resource]
+script = ExtResource("1_n2bl7")
+spell_name = "Fireball"
+damage = 60.0
+fire_rate = 1.0
+projectile_scene = ExtResource("1_527uf")
+metadata/_custom_type_script = "uid://drio2w8dn8u24"

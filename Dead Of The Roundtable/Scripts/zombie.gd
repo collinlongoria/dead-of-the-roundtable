@@ -1,6 +1,11 @@
 extends CharacterBody3D
 
+# These vars will change based on round
 @export var speed: float = 3.0
+
+@export var max_health: float = 100.0
+var current_health: float
+
 @export var target_group: String = "targets"
 
 @onready var nav_agent: NavigationAgent3D = $ZombieNavigationAgent
@@ -8,7 +13,18 @@ extends CharacterBody3D
 var target: Node3D
 
 func _ready():
+	current_health = max_health
+	
 	$TargetTimer.wait_time = randf_range(0.4, 0.6)
+
+func take_damage(amount: float) -> void:
+	current_health -= amount
+	if current_health <= 0:
+		die()
+
+func die() -> void:
+	# Can do more here later
+	queue_free()
 
 func _physics_process(delta: float) -> void:
 	if not target or nav_agent.is_navigation_finished():

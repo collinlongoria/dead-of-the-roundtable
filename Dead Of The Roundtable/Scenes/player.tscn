@@ -10,6 +10,14 @@ albedo_color = Color(0.8012886, 0.6508887, 0.36889017, 1)
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_v0iea"]
 material = SubResource("StandardMaterial3D_v0iea")
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_v0iea"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
 [node name="PlayerController" type="CharacterBody3D" unique_id=755936255 groups=["targets"]]
 script = ExtResource("1_v0iea")
 
@@ -25,3 +33,6 @@ current = true
 
 [node name="SpellSpawnPoint" type="Marker3D" parent="PlayerCamera" unique_id=4784692]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45838293, -0.40876555, -0.44317544)
+
+[node name="PlayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=862244524]
+replication_config = SubResource("SceneReplicationConfig_v0iea")

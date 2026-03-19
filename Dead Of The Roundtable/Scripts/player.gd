@@ -43,13 +43,23 @@ var slide_just_ended: bool = false
 var bob_time: float = 0.0
 var can_fire: bool = true
 
+func _enter_tree() -> void:
+	set_multiplayer_authority(name.to_int())
+
 func _ready() -> void:
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	if is_multiplayer_authority():
+		position = Vector3(randf_range(-2, 2), 12.0, randf_range(-2, 2))
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		
 	if camera:
+		camera.current = is_multiplayer_authority()
 		original_camera_y = camera.position.y
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if not is_multiplayer_authority():
+		return
+	
 	if event.is_action_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
@@ -63,6 +73,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if not is_multiplayer_authority():
+		return
+		
 	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	var on_floor := is_on_floor()
 

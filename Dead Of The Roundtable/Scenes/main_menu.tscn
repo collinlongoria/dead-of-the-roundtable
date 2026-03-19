@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://dko2m525rvcni"]
+
+[ext_resource type="Script" uid="uid://da3fo1ji8b70u" path="res://Scripts/game_manager.gd" id="1_28flt"]
+[ext_resource type="PackedScene" uid="uid://d3bgcl5avd3qe" path="res://Scenes/sandbox.tscn" id="2_1ehe0"]
+[ext_resource type="PackedScene" uid="uid://dtwheaff3qch7" path="res://Scenes/player.tscn" id="3_ce3w2"]
+
+[node name="GameManager" type="Node" unique_id=1831519109]
+script = ExtResource("1_28flt")
+world_scene = ExtResource("2_1ehe0")
+player_scene = ExtResource("3_ce3w2")
+
+[node name="UI" type="Control" parent="." unique_id=1119740222]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI" unique_id=32438192]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HostButton" type="Button" parent="UI/VBoxContainer" unique_id=1511327658]
+layout_mode = 2
+text = "Host Game"
+
+[node name="JoinButton" type="Button" parent="UI/VBoxContainer" unique_id=996236796]
+layout_mode = 2
+text = "Join Game"
+
+[node name="AddressEntry" type="LineEdit" parent="UI/VBoxContainer" unique_id=761994723]
+layout_mode = 2
+placeholder_text = "IP Address"

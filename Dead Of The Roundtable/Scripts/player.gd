@@ -48,7 +48,7 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	if is_multiplayer_authority():
-		position = Vector3(randf_range(-2, 2), 12.0, randf_range(-2, 2))
+		position = Vector3(randf_range(-2, 2), 2.0, randf_range(-2, 2))
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		
 	if camera:
@@ -229,14 +229,42 @@ func _handle_shooting() -> void:
 func _cast_spell() -> void:
 	can_fire = false
 	
-	# spawn projectile
-	var projectile = equipped_spell.projectile_scene.instantiate()
-	get_tree().root.add_child(projectile)
-	projectile.global_transform = spell_spawn_point.global_transform
+	# find exact center of the screen
+	var viewport := get_viewport()
+	var screen_center := viewport.get_visible_rect().size / 2.0
 	
-	if "damage" in projectile:
-		projectile.damage = equipped_spell.damage
+	# shoot ray from camera
+	var from := camera.project_ray_origin(screen_center)
+	var to := from + camera.project_ray_normal(screen_center) * 1000.0
+	
+	var space_state := get_world_3d().direct_space_state
+	var query := PhysicsRayQueryParameters3D.create(from, to)
+	query.exclude = [self.get_rid()] # dont include self
+	
+	var result := space_state.intersect_ray(query)
+	var target_point: Vector3
+	
+	if result:
+		target_point = result.position
+	else:
+		target_point = to
+	
+	# request host to spawn spell
+	_server_spawn_spell.rpc_id(1, spell_spawn_point.global_position, target_point)
 	
 	# start cooldown timer
 	var timer := get_tree().create_timer(equipped_spell.fire_rate)
 	timer.timeout.connect(func(): can_fire = true)
+
+@rpc("any_peer", "call_local", "reliable")
+func _server_spawn_spell(spawn_pos: Vector3, target_pos: Vector3) -> void:
+	if not multiplayer.is_server():
+		return
+	
+	var projectile = equipped_spell.projectile_scene.instantiate()
+	get_parent().add_child(projectile, true)
+	projectile.global_position = spawn_pos
+	projectile.look_at(target_pos, Vector3.UP)
+	
+	if "damage" in projectile:
+		projectile.damage = equipped_spell.damage

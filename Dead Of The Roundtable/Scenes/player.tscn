@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dtwheaff3qch7"]
 
 [ext_resource type="Script" uid="uid://euiww5dcvd4j" path="res://Scripts/player.gd" id="1_v0iea"]
+[ext_resource type="Resource" uid="uid://dn0h77o3w5pve" path="res://Resources/SpellData/ice_shard.tres" id="2_cvnsp"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f60y1"]
 
@@ -20,6 +21,7 @@ properties/1/replication_mode = 1
 
 [node name="PlayerController" type="CharacterBody3D" unique_id=755936255 groups=["targets"]]
 script = ExtResource("1_v0iea")
+equipped_spell = ExtResource("2_cvnsp")
 
 [node name="PlayerCollider" type="CollisionShape3D" parent="." unique_id=623920554]
 shape = SubResource("CapsuleShape3D_f60y1")

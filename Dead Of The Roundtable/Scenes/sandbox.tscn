@@ -57,6 +57,7 @@ follow_viewport_enabled = true
 [node name="DebugUI" parent="UI" unique_id=110358034 instance=ExtResource("2_2b6ht")]
 
 [node name="Hud" parent="UI" unique_id=1583769511 instance=ExtResource("4_koc8j")]
+texture_filter = 1
 
 [node name="Zombie" parent="." unique_id=332882544 instance=ExtResource("4_s2tkr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.9343567, 1.4909441, -9.747341)

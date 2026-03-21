@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://bvbxtf6nwtyp1"]
 
+[ext_resource type="Script" uid="uid://dftsnc7yuv6jn" path="res://Scripts/hud.gd" id="1_bjfho"]
 [ext_resource type="Texture2D" uid="uid://crshtyp8ewpsp" path="res://Assets/Sprites/bad_hand.png" id="1_e0onf"]
+[ext_resource type="Script" uid="uid://lqd6mr17ckcx" path="res://Scripts/health_bar.gd" id="2_fccik"]
 
 [node name="Hud" type="Control" unique_id=1583769511]
 layout_mode = 3
@@ -10,6 +12,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("1_bjfho")
 
 [node name="HandTexture" type="TextureRect" parent="." unique_id=1625981799]
 layout_mode = 1
@@ -39,3 +42,14 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "+"
 horizontal_alignment = 1
+
+[node name="BarContainer" type="VBoxContainer" parent="." unique_id=98694643]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HealthBar" type="ProgressBar" parent="BarContainer" unique_id=1795378739]
+layout_mode = 2
+fill_mode = 1
+show_percentage = false
+script = ExtResource("2_fccik")

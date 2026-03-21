@@ -17,7 +17,14 @@ func _ready():
 	
 	$TargetTimer.wait_time = randf_range(0.4, 0.6)
 
+	if not multiplayer.is_server():
+		$TargetTimer.stop()
+		nav_agent.avoidance_enabled = false
+
 func take_damage(amount: float) -> void:
+	if not multiplayer.is_server():
+		return
+
 	current_health -= amount
 	if current_health <= 0:
 		die()
@@ -27,6 +34,9 @@ func die() -> void:
 	queue_free()
 
 func _physics_process(delta: float) -> void:
+	if not multiplayer.is_server():
+		return
+	
 	if not target or nav_agent.is_navigation_finished():
 		return
 	
@@ -37,6 +47,9 @@ func _physics_process(delta: float) -> void:
 	nav_agent.set_velocity(desired_velocity)
 
 func _on_velocity_computed(safe_velocity: Vector3) -> void:
+	if not multiplayer.is_server():
+		return
+
 	velocity = safe_velocity
 	
 	if not is_on_floor():
@@ -64,6 +77,9 @@ func _find_closest_target() -> Node3D:
 	return closest
 
 func _on_target_timer_timeout() -> void:
+	if not multiplayer.is_server():
+		return
+
 	target = _find_closest_target()
 	
 	if target:

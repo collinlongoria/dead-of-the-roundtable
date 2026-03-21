@@ -1,8 +1,11 @@
 extends Control
-@export var player: CharacterBody3D
+var player: CharacterBody3D
 @onready var label: Label = $SpeedLabel
 
 func _process(_delta: float) -> void:
+	if not player or not is_instance_valid(player):
+		player = _find_local_player()
+
 	if not player or not label:
 		return
 
@@ -27,3 +30,11 @@ func _process(_delta: float) -> void:
 		player.current_slide_speed,
 		player.is_on_floor()
 	]
+
+func _find_local_player() -> CharacterBody3D:
+	# Find all players in the targets group and return the one we have authority over
+	var players = get_tree().get_nodes_in_group("targets")
+	for p in players:
+		if p is CharacterBody3D and p.is_multiplayer_authority():
+			return p
+	return null

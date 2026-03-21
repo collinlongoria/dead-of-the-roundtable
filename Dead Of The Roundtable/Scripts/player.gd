@@ -250,21 +250,31 @@ func _cast_spell() -> void:
 		target_point = to
 	
 	# request host to spawn spell
-	_server_spawn_spell.rpc_id(1, spell_spawn_point.global_position, target_point)
+	var spell_scene_path := equipped_spell.projectile_scene.resource_path
+	var spell_damage := equipped_spell.damage
+	_server_spawn_spell.rpc_id(1, spell_spawn_point.global_position, target_point, spell_scene_path, spell_damage)
 	
 	# start cooldown timer
 	var timer := get_tree().create_timer(equipped_spell.fire_rate)
 	timer.timeout.connect(func(): can_fire = true)
 
 @rpc("any_peer", "call_local", "reliable")
-func _server_spawn_spell(spawn_pos: Vector3, target_pos: Vector3) -> void:
+func _server_spawn_spell(spawn_pos: Vector3, target_pos: Vector3, scene_path: String, damage: float) -> void:
 	if not multiplayer.is_server():
 		return
 	
-	var projectile = equipped_spell.projectile_scene.instantiate()
-	get_parent().add_child(projectile, true)
-	projectile.global_position = spawn_pos
-	projectile.look_at(target_pos, Vector3.UP)
+	var scene := load(scene_path) as PackedScene
+	if not scene:
+		push_error("Failed to load spell scene: ", scene_path)
+		return
+
+	var projectile = scene.instantiate()
+	projectile.position = spawn_pos
+	var direction = spawn_pos.direction_to(target_pos)
+	if direction != Vector3.ZERO:
+		projectile.transform.basis = Basis.looking_at(direction, Vector3.UP)
 	
 	if "damage" in projectile:
-		projectile.damage = equipped_spell.damage
+		projectile.damage = damage
+	
+	get_parent().add_child(projectile, true)

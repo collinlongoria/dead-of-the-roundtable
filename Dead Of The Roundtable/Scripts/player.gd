@@ -229,13 +229,25 @@ func _handle_shooting() -> void:
 func _cast_spell() -> void:
 	can_fire = false
 	
-	# find exact center of the screen
-	var viewport := get_viewport()
-	var screen_center := viewport.get_visible_rect().size / 2.0
+	# get absolute camera orientation
+	var forward := -camera.global_transform.basis.z
+	var right := camera.global_transform.basis.x
+	var up := camera.global_transform.basis.y
+	
+	# get bloom
+	var spread_amount: float = equipped_spell.accuracy
+	
+	# random point with inside a circle for bloom
+	var random_angle := randf() * TAU
+	var random_radius := randf() * spread_amount
+	var rand_x := cos(random_angle) * random_radius
+	var rand_y := sin(random_angle) * random_radius
+	
+	var cast_direction := (forward + (right * rand_x) + (up * rand_y)).normalized()
 	
 	# shoot ray from camera
-	var from := camera.project_ray_origin(screen_center)
-	var to := from + camera.project_ray_normal(screen_center) * 1000.0
+	var from := camera.global_position
+	var to := from + (cast_direction * 1000.0)
 	
 	var space_state := get_world_3d().direct_space_state
 	var query := PhysicsRayQueryParameters3D.create(from, to)
@@ -269,12 +281,15 @@ func _server_spawn_spell(spawn_pos: Vector3, target_pos: Vector3, scene_path: St
 		return
 
 	var projectile = scene.instantiate()
-	projectile.position = spawn_pos
-	var direction = spawn_pos.direction_to(target_pos)
-	if direction != Vector3.ZERO:
-		projectile.transform.basis = Basis.looking_at(direction, Vector3.UP)
+	
+	get_parent().add_child(projectile, true)
+	
+	projectile.global_position = spawn_pos
+	
+	if spawn_pos.distance_to(target_pos) > 0.01:
+			projectile.look_at(target_pos, Vector3.UP)
 	
 	if "damage" in projectile:
 		projectile.damage = damage
 	
-	get_parent().add_child(projectile, true)
+	

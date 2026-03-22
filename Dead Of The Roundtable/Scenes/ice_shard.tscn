@@ -55,7 +55,7 @@ properties/2/spawn = true
 properties/2/replication_mode = 2
 
 [node name="IceShard" type="Area3D" unique_id=747440183]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 script = ExtResource("1_w5rp8")
 
 [node name="Sprite" type="Sprite3D" parent="." unique_id=2126748753]

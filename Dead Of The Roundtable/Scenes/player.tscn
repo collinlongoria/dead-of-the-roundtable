@@ -34,7 +34,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
 current = true
 
 [node name="SpellSpawnPoint" type="Marker3D" parent="PlayerCamera" unique_id=4784692]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45838293, -0.40876555, -0.44317544)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45838293, -0.29827696, -0.44317544)
 
 [node name="PlayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=862244524]
 replication_config = SubResource("SceneReplicationConfig_v0iea")

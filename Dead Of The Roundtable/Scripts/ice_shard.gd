@@ -2,6 +2,7 @@ extends Area3D
 
 var damage: float = 0.0
 var speed: float = 5.0
+var is_critical: bool = false
 
 func _physics_process(delta: float) -> void:
 	position -= transform.basis.z * speed * delta
@@ -16,11 +17,8 @@ func _on_body_entered(body: Node3D) -> void:
 	if body.has_method("take_damage"):
 		body.take_damage(damage)
 		
-		# Determine if it was a crit TODO replace with real logic
-		var is_crit = randf() < 0.2 
-		
 		# Tell all clients to show the damage number
-		spawn_damage_number.rpc(global_position, damage, is_crit)
+		spawn_damage_number.rpc(global_position, damage, is_critical)
 	
 	queue_free()
 

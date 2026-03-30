@@ -6,19 +6,25 @@ extends CharacterBody3D
 @onready var spell_spawn_point: Marker3D = $PlayerCamera/SpellSpawnPoint
 
 # Params
-@export var walk_speed: float = 5.0 # base walk speed
-@export var sprint_speed: float = 10.0 # max sprint speed
-@export var sprint_acceleration: float = 20.0 # sprint accel to max
-@export var crouch_speed: float = 2.5 # base crouch speed
-@export var slide_speed_initial: float = 18.0 # when the player slides, this is how fast it starts
+@export_group("Base Speeds")
+@export var base_walk_speed: float = 5.0 # base walk speed
+@export var base_sprint_speed: float = 10.0 # max sprint speed
+@export var base_crouch_speed: float = 2.5 # base crouch speed
+@export var base_slide_speed_initial: float = 18.0 # when the player slides, this is how fast it starts
+
+@export_group("Movement Settings")
 @export var slide_friction: float = 18.0 # friction for slowing slide
 @export var slide_end_threshold: float = 2.0 # how slow the player must be sliding for it to end
 @export var mouse_sensitivity: float = 0.003 # mouse sensitiivity multiplier
+@export var sprint_acceleration: float = 20.0 # sprint accel to max
 
 # Spell Params
+@export_group("Stats")
 @export var equipped_spell: SpellData
+@export var stats: PlayerStats
 
 # Camera Tilt Params
+@export_group("Camera Settings")
 @export var strafe_tilt_max: float = 1.5 # maximum amount camera will tilt (side to side)
 @export var forward_tilt_max: float = 0.3 # maximum amount camera will tilt (forward and back)
 @export var tilt_lerp_speed: float = 8.0 # speed to reach max tilt distance
@@ -42,6 +48,19 @@ var sprint_toggled: bool = false
 var slide_just_ended: bool = false
 var bob_time: float = 0.0
 var can_fire: bool = true
+
+# movement vars
+var walk_speed: float:
+	get: return base_walk_speed * (stats.movement_speed if stats else 1.0)
+
+var sprint_speed: float:
+	get: return base_sprint_speed * (stats.movement_speed if stats else 1.0)
+
+var crouch_speed: float:
+	get: return base_crouch_speed * (stats.movement_speed if stats else 1.0)
+
+var slide_speed_initial: float:
+	get: return base_slide_speed_initial * (stats.movement_speed if stats else 1.0)
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
@@ -263,15 +282,23 @@ func _cast_spell() -> void:
 	
 	# request host to spawn spell
 	var spell_scene_path := equipped_spell.projectile_scene.resource_path
-	var spell_damage := equipped_spell.damage
-	_server_spawn_spell.rpc_id(1, spell_spawn_point.global_position, target_point, spell_scene_path, spell_damage)
+	
+	# combine with player stats
+	var final_damage := equipped_spell.damage * stats.damage_multiplier
+	var is_crit := randf() <= (stats.critical_chance_multiplier - 1.0)
+	
+	if is_crit:
+		final_damage *= stats.critical_damage_multiplier
+	
+	_server_spawn_spell.rpc_id(1, spell_spawn_point.global_position, target_point, spell_scene_path, final_damage, is_crit)
 	
 	# start cooldown timer
-	var timer := get_tree().create_timer(equipped_spell.fire_rate)
+	var final_fire_rate = equipped_spell.fire_rate / stats.attack_speed_multiplier
+	var timer := get_tree().create_timer(final_fire_rate)
 	timer.timeout.connect(func(): can_fire = true)
 
 @rpc("any_peer", "call_local", "reliable")
-func _server_spawn_spell(spawn_pos: Vector3, target_pos: Vector3, scene_path: String, damage: float) -> void:
+func _server_spawn_spell(spawn_pos: Vector3, target_pos: Vector3, scene_path: String, damage: float, is_crit: bool) -> void:
 	if not multiplayer.is_server():
 		return
 	
@@ -281,9 +308,7 @@ func _server_spawn_spell(spawn_pos: Vector3, target_pos: Vector3, scene_path: St
 		return
 
 	var projectile = scene.instantiate()
-	
 	get_parent().add_child(projectile, true)
-	
 	projectile.global_position = spawn_pos
 	
 	if spawn_pos.distance_to(target_pos) > 0.01:
@@ -291,5 +316,5 @@ func _server_spawn_spell(spawn_pos: Vector3, target_pos: Vector3, scene_path: St
 	
 	if "damage" in projectile:
 		projectile.damage = damage
-	
-	
+	if "is_critical" in projectile:
+		projectile.is_critical = is_crit

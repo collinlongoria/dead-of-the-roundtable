@@ -2,6 +2,14 @@
 
 [ext_resource type="Script" uid="uid://euiww5dcvd4j" path="res://Scripts/player.gd" id="1_v0iea"]
 [ext_resource type="Resource" uid="uid://dn0h77o3w5pve" path="res://Resources/SpellData/ice_shard.tres" id="2_cvnsp"]
+[ext_resource type="Script" uid="uid://doxh5s7gbdebo" path="res://Scripts/player_stats.gd" id="3_6t5aa"]
+
+[sub_resource type="Resource" id="Resource_vgqql"]
+script = ExtResource("3_6t5aa")
+movement_speed = 1.225
+critical_chance_multiplier = 1.1
+critical_damage_multiplier = 2.0
+metadata/_custom_type_script = "uid://doxh5s7gbdebo"
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f60y1"]
 
@@ -22,6 +30,7 @@ properties/1/replication_mode = 1
 [node name="PlayerController" type="CharacterBody3D" unique_id=755936255 groups=["targets"]]
 script = ExtResource("1_v0iea")
 equipped_spell = ExtResource("2_cvnsp")
+stats = SubResource("Resource_vgqql")
 
 [node name="PlayerCollider" type="CollisionShape3D" parent="." unique_id=623920554]
 shape = SubResource("CapsuleShape3D_f60y1")

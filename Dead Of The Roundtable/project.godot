@@ -15,6 +15,10 @@ run/main_scene="uid://dko2m525rvcni"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+DamageIndicator="*uid://dt5su8np0p7p8"
+
 [global_group]
 
 targets="Zombie Targets"

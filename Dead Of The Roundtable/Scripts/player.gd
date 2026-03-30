@@ -67,7 +67,6 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	if is_multiplayer_authority():
-		position = Vector3(randf_range(-2, 2), 2.0, randf_range(-2, 2))
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		
 	if camera:

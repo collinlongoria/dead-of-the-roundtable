@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://2d84vjeeqt4y"]
+
+[ext_resource type="Texture2D" uid="uid://8yo2vg57awc4" path="res://Assets/Sprites/player_spawner_texture.png" id="1_qn1mc"]
+[ext_resource type="Script" uid="uid://ciknugxmxi288" path="res://Scripts/player_spawner.gd" id="2_iwcbr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iwcbr"]
+albedo_texture = ExtResource("1_qn1mc")
+uv1_scale = Vector3(6, 6, 6)
+texture_filter = 0
+
+[sub_resource type="BoxMesh" id="BoxMesh_o4mbg"]
+material = SubResource("StandardMaterial3D_iwcbr")
+
+[node name="PlayerSpawner" type="MeshInstance3D" unique_id=707410333]
+mesh = SubResource("BoxMesh_o4mbg")
+script = ExtResource("2_iwcbr")

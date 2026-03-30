@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://iiidt2i7gjb5" path="res://Scripts/damage_number.gd" id="1_n4jia"]
 
 [node name="DamageNumber" type="Label3D" unique_id=659746042]
-pixel_size = 0.01
 billboard = 1
 no_depth_test = true
 text = "0"

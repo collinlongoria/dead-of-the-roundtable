@@ -1,15 +1,18 @@
 [gd_scene format=3 uid="uid://crnlhmtd1tkbt"]
 
+[ext_resource type="Script" uid="uid://b1efau0mwqe8x" path="res://Scripts/dummy.gd" id="1_5d6mj"]
 [ext_resource type="Texture2D" uid="uid://c21yura3x37i2" path="res://Assets/Sprites/target.png" id="1_x66xh"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5d6mj"]
 
 [node name="Dummy" type="StaticBody3D" unique_id=1780045763]
+script = ExtResource("1_5d6mj")
 
 [node name="DummyCollider" type="CollisionShape3D" parent="." unique_id=1581794182]
 shape = SubResource("CapsuleShape3D_5d6mj")
 
 [node name="DummySprite" type="Sprite3D" parent="." unique_id=987506847 groups=["targets"]]
+transform = Transform3D(1.555, 0, 0, 0, 1.555, 0, 0, 0, 1.555, 0, 0, 0)
 billboard = 2
 double_sided = false
 texture_filter = 0

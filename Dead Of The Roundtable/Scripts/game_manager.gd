@@ -84,4 +84,18 @@ func _spawn_player(id: int) -> void:
 	
 	var player = player_scene.instantiate()
 	player.name = str(id)
+	
 	current_world.add_child(player)
+	
+	var spawn_node = current_world.find_child("PlayerSpawner")
+	
+	if spawn_node and spawn_node is Node3D:
+		player.global_position = spawn_node.global_position
+		
+		var offset_x = randf_range(-2.0, 2.0)
+		var offset_z = randf_range(-2.0, 2.0)
+		player.global_position += Vector3(offset_x, 0, offset_z)
+	else:
+		push_warning("PlayerSpawn node not found in the world! Defaulting to origin.")
+	
+	

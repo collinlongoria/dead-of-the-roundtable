@@ -289,7 +289,7 @@ func _cast_spell() -> void:
 	if is_crit:
 		final_damage *= stats.critical_damage_multiplier
 	
-	_server_spawn_spell.rpc_id(1, spell_spawn_point.global_position, target_point, spell_scene_path, final_damage, is_crit)
+	_server_spawn_spell.rpc_id(1, spell_spawn_point.global_position, target_point, velocity, spell_scene_path, final_damage, is_crit)
 	
 	# start cooldown timer
 	var final_fire_rate = equipped_spell.fire_rate / stats.attack_speed_multiplier
@@ -297,7 +297,7 @@ func _cast_spell() -> void:
 	timer.timeout.connect(func(): can_fire = true)
 
 @rpc("any_peer", "call_local", "reliable")
-func _server_spawn_spell(spawn_pos: Vector3, target_pos: Vector3, scene_path: String, damage: float, is_crit: bool) -> void:
+func _server_spawn_spell(spawn_pos: Vector3, target_pos: Vector3, player_velocity: Vector3, scene_path: String, damage: float, is_crit: bool) -> void:
 	if not multiplayer.is_server():
 		return
 	
@@ -310,10 +310,17 @@ func _server_spawn_spell(spawn_pos: Vector3, target_pos: Vector3, scene_path: St
 	get_parent().add_child(projectile, true)
 	projectile.global_position = spawn_pos
 	
-	if spawn_pos.distance_to(target_pos) > 0.01:
-			projectile.look_at(target_pos, Vector3.UP)
+	var dir := (target_pos - spawn_pos).normalized()
+	
+	if dir.length_squared() > 0.0001:
+		projectile.look_at(target_pos, Vector3.UP)
 	
 	if "damage" in projectile:
 		projectile.damage = damage
 	if "is_critical" in projectile:
 		projectile.is_critical = is_crit
+	
+	if "velocity" in projectile and "speed" in projectile:
+		var forward_speed: float = max(0.0, player_velocity.dot(dir))
+		var inherited_speed := forward_speed * 0.5
+		projectile.velocity = dir * (projectile.speed + inherited_speed)

@@ -14,6 +14,7 @@ shape = SubResource("CapsuleShape3D_5d6mj")
 [node name="DummySprite" type="Sprite3D" parent="." unique_id=987506847 groups=["targets"]]
 transform = Transform3D(1.555, 0, 0, 0, 1.555, 0, 0, 0, 1.555, 0, 0, 0)
 billboard = 2
+shaded = true
 double_sided = false
 texture_filter = 0
 texture = ExtResource("1_x66xh")

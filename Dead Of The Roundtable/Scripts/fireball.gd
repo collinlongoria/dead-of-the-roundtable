@@ -1,12 +1,12 @@
-extends Area3D
+extends RigidBody3D
 
 var damage: float = 0.0
 var velocity: Vector3 = Vector3.ZERO
-@export var speed: float = 20.0
+@export var speed: float = 5.0
 var is_critical: bool = false
 
 func _physics_process(delta: float) -> void:
-	global_position += velocity * delta
+	linear_velocity = velocity
 	
 	if velocity.length_squared() > 0.0001:
 		look_at(global_position + velocity, Vector3.UP)

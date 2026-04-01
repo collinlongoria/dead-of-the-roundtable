@@ -64,10 +64,6 @@ texture_filter = 0
 texture = ExtResource("1_23qfy")
 hframes = 2
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Sprite" unique_id=423795216]
-light_color = Color(0, 1, 1, 1)
-omni_attenuation = 1.415
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1699675673]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
 shape = SubResource("SphereShape3D_w5rp8")

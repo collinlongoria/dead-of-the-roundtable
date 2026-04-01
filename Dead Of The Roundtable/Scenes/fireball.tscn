@@ -1,10 +1,12 @@
 [gd_scene format=3 uid="uid://trwlac7ermtm"]
 
+[ext_resource type="Script" uid="uid://dr1dijo73klj" path="res://Scripts/fireball.gd" id="1_0mxqg"]
 [ext_resource type="Texture2D" uid="uid://biojv6p1t0nb0" path="res://Assets/Sprites/bad_fireball.png" id="1_xi7wk"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_xi7wk"]
 
 [node name="Fireball" type="RigidBody3D" unique_id=797516097]
+script = ExtResource("1_0mxqg")
 
 [node name="Sprite" type="Sprite3D" parent="." unique_id=1546738863]
 billboard = 1

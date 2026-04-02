@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://com4bfxvbhe76" path="res://Scenes/zombie.tscn" id="5_ftrnb"]
 [ext_resource type="PackedScene" uid="uid://crnlhmtd1tkbt" path="res://Scenes/dummy.tscn" id="6_8nl3u"]
 [ext_resource type="PackedScene" uid="uid://2d84vjeeqt4y" path="res://Scenes/player_spawner.tscn" id="7_8nl3u"]
+[ext_resource type="PackedScene" uid="uid://dht66w7fqgd55" path="res://Scenes/lava_tile.tscn" id="8_utscr"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rlei8"]
 sky_top_color = Color(0.39716098, 0.42456082, 0.6685972, 1)
@@ -74,3 +75,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5458443, 11.041178)
 
 [node name="PlayerSpawner" parent="." unique_id=707410333 instance=ExtResource("7_8nl3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.622633, 15.701743)
+
+[node name="LavaTile" parent="." unique_id=1715686303 instance=ExtResource("8_utscr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05105, 8.350797)

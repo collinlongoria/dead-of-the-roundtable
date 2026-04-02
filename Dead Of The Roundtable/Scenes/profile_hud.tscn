@@ -1,0 +1,98 @@
+[gd_scene format=3 uid="uid://cj0qa6mtcm1m4"]
+
+[ext_resource type="Texture2D" uid="uid://dvyc0hw8i5rog" path="res://icon.svg" id="1_mv1l4"]
+[ext_resource type="Script" uid="uid://chkpgk47837un" path="res://Scripts/health_wrapper.gd" id="2_tsvmt"]
+[ext_resource type="FontFile" uid="uid://dxwtbcclixi84" path="res://Assets/Fonts/Bathrind.otf" id="3_q7drg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_32wjl"]
+bg_color = Color(0.099985994, 0.09998601, 0.099985965, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6wbl4"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_07m03"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7djp"]
+bg_color = Color(0.65891117, 1.9131974e-06, 5.2943824e-07, 1)
+
+[node name="ProfileHud" type="Control" unique_id=1977542371]
+layout_mode = 3
+anchors_preset = 0
+size_flags_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=259011462]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -60.0
+offset_right = 264.0
+grow_vertical = 0
+
+[node name="PictureBackground" type="ColorRect" parent="HBoxContainer" unique_id=1197348692]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+color = Color(0.09803922, 0.09803922, 0.09803922, 1)
+
+[node name="PictureRect" type="TextureRect" parent="HBoxContainer/PictureBackground" unique_id=1115420974]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_mv1l4")
+expand_mode = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1557362186]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="HealthWrapper" type="MarginContainer" parent="HBoxContainer/VBoxContainer" unique_id=1729818932 groups=["hud"]]
+layout_mode = 2
+script = ExtResource("2_tsvmt")
+
+[node name="CatchupBar" type="ProgressBar" parent="HBoxContainer/VBoxContainer/HealthWrapper" unique_id=1586251354]
+custom_minimum_size = Vector2(200, 25)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/background = SubResource("StyleBoxFlat_32wjl")
+theme_override_styles/fill = SubResource("StyleBoxFlat_6wbl4")
+rounded = true
+show_percentage = false
+
+[node name="HealthBar" type="ProgressBar" parent="HBoxContainer/VBoxContainer/HealthWrapper" unique_id=311013495]
+custom_minimum_size = Vector2(200, 25)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxEmpty_07m03")
+theme_override_styles/fill = SubResource("StyleBoxFlat_a7djp")
+rounded = true
+show_percentage = false
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HealthWrapper" unique_id=1606063425]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/HealthWrapper/HBoxContainer" unique_id=1551675664]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="HealthLabel" type="Label" parent="HBoxContainer/VBoxContainer/HealthWrapper/HBoxContainer" unique_id=1428020914]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_q7drg")
+theme_override_font_sizes/font_size = 12
+text = "100 HP"
+
+[node name="MoneyLabel" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=1074740960]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_q7drg")
+text = "$100"
+horizontal_alignment = 1

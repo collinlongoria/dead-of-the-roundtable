@@ -27,7 +27,7 @@ properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="PlayerController" type="CharacterBody3D" unique_id=755936255 groups=["targets"]]
+[node name="PlayerController" type="CharacterBody3D" unique_id=755936255 groups=["player", "targets"]]
 script = ExtResource("1_v0iea")
 equipped_spell = ExtResource("2_cvnsp")
 stats = SubResource("Resource_vgqql")

@@ -22,6 +22,8 @@ DamageIndicator="*uid://dt5su8np0p7p8"
 [global_group]
 
 targets="Zombie Targets"
+hud=""
+player=""
 
 [input]
 

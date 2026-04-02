@@ -1,5 +1,7 @@
 extends CharacterBody3D
 
+signal health_changed(new_health: float, max_health: float)
+
 # Refs
 @onready var camera: Camera3D = $PlayerCamera
 @onready var mesh: MeshInstance3D = $PlayerMesh
@@ -48,6 +50,7 @@ var sprint_toggled: bool = false
 var slide_just_ended: bool = false
 var bob_time: float = 0.0
 var can_fire: bool = true
+var current_health: float
 
 # movement vars
 var walk_speed: float:
@@ -68,6 +71,16 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	if is_multiplayer_authority():
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		
+		current_health = stats.health
+		
+		# HUD connection
+		var hud = get_tree().get_first_node_in_group("hud")
+		if hud:
+			health_changed.connect(hud._on_player_health_changed)
+			health_changed.emit(current_health, stats.health)
+		else:
+			push_warning("Player spawned, but no HUD found in scene!")
 		
 	if camera:
 		camera.current = is_multiplayer_authority()
@@ -295,6 +308,12 @@ func _cast_spell() -> void:
 	var final_fire_rate = equipped_spell.fire_rate / stats.attack_speed_multiplier
 	var timer := get_tree().create_timer(final_fire_rate)
 	timer.timeout.connect(func(): can_fire = true)
+
+func take_damage(amount: float) -> void:
+	current_health -= amount
+	current_health = clamp(current_health, 0.0, stats.health)
+	
+	health_changed.emit(current_health, stats.health)
 
 @rpc("any_peer", "call_local", "reliable")
 func _server_spawn_spell(spawn_pos: Vector3, target_pos: Vector3, player_velocity: Vector3, scene_path: String, damage: float, is_crit: bool) -> void:

@@ -34,3 +34,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01751709, 0, 0.007080078)
 shape = SubResource("BoxShape3D_b6271")
 
 [connection signal="body_entered" from="Detector" to="." method="_on_detector_body_entered"]
+[connection signal="body_exited" from="Detector" to="." method="_on_detector_body_exited"]

@@ -25,15 +25,11 @@ grow_horizontal = 0
 grow_vertical = 0
 texture = ExtResource("1_e0onf")
 
-[node name="BarContainer" type="VBoxContainer" parent="." unique_id=98694643]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-grow_vertical = 0
-
-[node name="ProfileHud" parent="BarContainer" unique_id=1977542371 instance=ExtResource("3_bjfho")]
-layout_mode = 2
+[node name="ProfileHud" parent="." unique_id=1977542371 instance=ExtResource("3_bjfho")]
+layout_mode = 0
+offset_top = 648.0
+offset_bottom = 648.0
+scale = Vector2(1.4, 1.4)
 size_flags_horizontal = 0
 size_flags_vertical = 3
 

@@ -28,7 +28,7 @@ ssao_enabled = true
 next_pass = ExtResource("4_puce7")
 albedo_texture = ExtResource("3_rlei8")
 uv1_scale = Vector3(42.98, 42.98, 42.98)
-texture_filter = 0
+texture_filter = 2
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_8nl3u"]
 material = SubResource("StandardMaterial3D_ftrnb")

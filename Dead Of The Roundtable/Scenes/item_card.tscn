@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://bhorwfysm8v74"]
+
+[ext_resource type="FontFile" uid="uid://dxwtbcclixi84" path="res://Assets/Fonts/Bathrind.otf" id="1_yb78l"]
+[ext_resource type="Texture2D" uid="uid://bskypqhx7b28n" path="res://Assets/Sprites/helmet_asset.png" id="2_8m360"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8m360"]
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fyp8p"]
+atlas = ExtResource("2_8m360")
+region = Rect2(0, 0, 32, 32)
+
+[node name="ItemCard" type="Control" unique_id=2049727658]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="Panel" parent="." unique_id=1778865451]
+custom_minimum_size = Vector2(200, 240)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8m360")
+
+[node name="Container" type="VBoxContainer" parent="Background" unique_id=1195212120]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopSpacing" type="MarginContainer" parent="Background/Container" unique_id=564924231]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="Background/Container" unique_id=2012663165]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_yb78l")
+text = "Item Name"
+horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Background/Container" unique_id=368336220]
+texture_filter = 1
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = SubResource("AtlasTexture_fyp8p")

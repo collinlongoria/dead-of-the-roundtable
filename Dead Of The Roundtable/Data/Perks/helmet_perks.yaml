@@ -1,0 +1,17 @@
+helmet_perks:
+	proactive:
+		name: "Proactive"
+		description: "Double CRITICAL DAMAGE if an enemy is at full health."
+	nearsighted:
+		name: "Nearsighted"
+		description: "Bonus DAMAGE to enemies at point-blank range."
+	focused:
+		name: "Focused"
+		description: "Prolonged firing reduces SPELL SPREAD."
+	assassin:
+		name: "Assassin"
+		description: "Temporarily increase MOVEMENT SPEED after getting a point blank kill."
+	lucky:
+		name: "Lucky"
+		description: "Critical hits have a chance of returning MANA."
+  

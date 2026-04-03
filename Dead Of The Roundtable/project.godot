@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 DamageIndicator="*uid://dt5su8np0p7p8"
+LootDatabase="*uid://c7ot2eeenqmkb"
 
 [global_group]
 

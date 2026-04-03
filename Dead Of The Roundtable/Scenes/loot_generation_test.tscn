@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://uuh0yt6rdngg"]
+
+[ext_resource type="Script" uid="uid://bqkki8ooucksw" path="res://Scenes/loot_generation_test.gd" id="1_20p4c"]
+[ext_resource type="PackedScene" uid="uid://bhorwfysm8v74" path="res://Scenes/item_card.tscn" id="1_ughaf"]
+
+[node name="LootGenerationTest" type="Node2D" unique_id=1888286403]
+script = ExtResource("1_20p4c")
+
+[node name="ItemCard" parent="." unique_id=2049727658 instance=ExtResource("1_ughaf")]
+offset_left = 126.0
+offset_top = 78.0
+offset_right = 126.0
+offset_bottom = 78.0
+scale = Vector2(2, 2)
+
+[node name="Button" type="Button" parent="." unique_id=1630968999]
+offset_left = 701.0
+offset_top = 307.0
+offset_right = 881.0
+offset_bottom = 338.0
+text = "Generate New Helmet"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

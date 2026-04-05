@@ -4,6 +4,7 @@ class_name LootItem
 @export var item_name: String = ""
 @export var rarity: String = ""
 @export var icon_path: String = ""
+@export var item_type: String = ""
 
 @export var stats: Dictionary = {}
 

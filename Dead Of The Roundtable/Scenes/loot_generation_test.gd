@@ -2,6 +2,8 @@ extends Node2D
 
 @onready var itemCard: ItemCard = $ItemCard
 
+var type: String = "helmet"
+
 func _on_button_pressed() -> void:
 	var dice: int = round(randf_range(0, 3))
 	
@@ -16,5 +18,15 @@ func _on_button_pressed() -> void:
 		3:
 			rarity = "legendary"
 	
-	var helmet = LootDatabase.generate_helmet(rarity)
+	var helmet = LootDatabase.generate_loot(type, rarity)
 	itemCard.setup_card(helmet)
+
+
+func _on_item_list_item_selected(index: int) -> void:
+	match index:
+		0:
+			type = "helmet"
+		1:
+			type = "chest"
+		_:
+			type = "helmet"

@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://kaih6ldkt8tj" path="res://Assets/Sprites/stone_floor.png" id="3_rlei8"]
 [ext_resource type="Material" uid="uid://bret6fh2tc5d7" path="res://Resources/Materials/outline_shader.tres" id="4_puce7"]
 [ext_resource type="PackedScene" uid="uid://com4bfxvbhe76" path="res://Scenes/zombie.tscn" id="5_ftrnb"]
+[ext_resource type="PackedScene" uid="uid://cbhn18ceowcmr" path="res://Scenes/loot.tscn" id="5_rj37j"]
 [ext_resource type="PackedScene" uid="uid://crnlhmtd1tkbt" path="res://Scenes/dummy.tscn" id="6_8nl3u"]
 [ext_resource type="PackedScene" uid="uid://2d84vjeeqt4y" path="res://Scenes/player_spawner.tscn" id="7_8nl3u"]
 [ext_resource type="PackedScene" uid="uid://dht66w7fqgd55" path="res://Scenes/lava_tile.tscn" id="8_utscr"]
@@ -62,6 +63,9 @@ transform = Transform3D(27.4, 0, 0, 0, 27.4, 0, 0, 0, 27.4, 0, 0.96467566, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1978550456]
 mesh = SubResource("PlaneMesh_8nl3u")
+
+[node name="Loot" parent="StaticBody3D/MeshInstance3D" unique_id=1726042924 instance=ExtResource("5_rj37j")]
+transform = Transform3D(0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, 0, 0.054242183, 0.10313774)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=2123312885]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0128479, -0.24804688, 0.022888184)

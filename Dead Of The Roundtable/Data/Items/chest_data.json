@@ -1,0 +1,50 @@
+{
+  "chest_perks": {
+	"turtle": {
+	  "name": "Turtle",
+	  "description": "Adds a high damage-mitigating shield to your back."
+	},
+	"soulfull": {
+	  "name": "Soulfull",
+	  "description": "Large increase to maximum HEALTH."
+	},
+	"reactive": {
+	  "name": "Reactive",
+	  "description": "When HEALTH drops below 10%, nearby enemies are stunned for a short time."
+	},
+	"retaliator": {
+	  "name": "Retaliator",
+	  "description": "Deal bonus DAMAGE when your HEALTH is low."
+	},
+	"endurance": {
+	  "name": "Endurance",
+	  "description": "Chance for incoming damage to be severly reduced."
+	}
+  },
+  "chest_rarities": {
+	"common": {
+	  "name": "Cloth Shirt",
+	  "icon": "chest_common.png",
+	  "perk_count": 0,
+	  "stat_count": 1
+	},
+	"rare": {
+	  "name": "Leather Tunic",
+	  "icon": "chest_rare.png",
+	  "perk_count": 1,
+	  "stat_count": 2
+	},
+	"epic": {
+	  "name": "Iron Cuirass",
+	  "icon": "chest_epic.png",
+	  "perk_count": 1,
+	  "stat_count": 3
+	},
+	"legendary": {
+	  "name": "Steel Chestplate",
+	  "icon": "chest_legendary.png",
+	  "perk_count": 2,
+	  "stat_count": 3
+	}
+  }
+}

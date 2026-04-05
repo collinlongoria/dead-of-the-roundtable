@@ -6,6 +6,14 @@ signal health_changed(new_health: float, max_health: float)
 @onready var camera: Camera3D = $PlayerCamera
 @onready var mesh: MeshInstance3D = $PlayerMesh
 @onready var spell_spawn_point: Marker3D = $PlayerCamera/SpellSpawnPoint
+@onready var interact_ray: RayCast3D = $PlayerCamera/InteractRay
+
+# Loot
+@export_group("Equipment")
+@export var equipped_helmet: LootItem
+@export var equipped_chest: LootItem
+
+var active_perks: Array[String] = []
 
 # Params
 @export_group("Base Speeds")
@@ -51,6 +59,7 @@ var slide_just_ended: bool = false
 var bob_time: float = 0.0
 var can_fire: bool = true
 var current_health: float
+var current_target: Node3D = null # what is currently being looked at
 
 # movement vars
 var walk_speed: float:
@@ -150,6 +159,31 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 	_handle_shooting()
+	
+	_handle_interaction()
+
+func _handle_interaction() -> void:
+	var collider = interact_ray.get_collider()
+	
+	# If we are looking at a LootDrop
+	if collider is LootDrop:
+		if current_target != collider:
+			# Unfocus the old one if we quickly looked from one drop to another
+			if current_target and current_target.has_method("unfocus"):
+				current_target.unfocus()
+			
+			current_target = collider
+			current_target.focus()
+			
+		# Handle the click (assuming you have an "interact" input action)
+		if Input.is_action_just_pressed("interact"):
+			current_target.interact(self)
+			
+	# If we are looking at nothing, but we previously had a target
+	elif current_target:
+		if current_target.has_method("unfocus"):
+			current_target.unfocus()
+		current_target = null
 
 func _determine_state(input_dir: Vector2, on_floor: bool) -> State:
 	if state == State.SLIDE:
@@ -343,3 +377,50 @@ func _server_spawn_spell(spawn_pos: Vector3, target_pos: Vector3, player_velocit
 		var forward_speed: float = max(0.0, player_velocity.dot(dir))
 		var inherited_speed := forward_speed * 0.5
 		projectile.velocity = dir * (projectile.speed + inherited_speed)
+
+func equip_item(new_item: LootItem) -> void:
+	if not is_multiplayer_authority() or not new_item:
+		return
+		
+	match new_item.item_type:
+		"helmet":
+			_swap_gear(equipped_helmet, new_item)
+			equipped_helmet = new_item
+		"chest":
+			_swap_gear(equipped_chest, new_item)
+			equipped_chest = new_item
+		_:
+			push_error("Player tried to equip unknown item type: ", new_item.item_type)
+
+func _swap_gear(old_item: LootItem, new_item: LootItem) -> void:
+	if old_item:
+		_apply_item_modifiers(old_item, -1.0)
+		_toggle_item_perks(old_item, false)
+		
+	if new_item:
+		_apply_item_modifiers(new_item, 1.0)
+		_toggle_item_perks(new_item, true)
+
+func _apply_item_modifiers(item: LootItem, multiplier: float) -> void:
+	if not stats: return
+	
+	for stat_enum in item.stats:
+		var amount: float = item.stats[stat_enum] * multiplier
+		stats.apply_modifier(stat_enum, amount)
+
+func _toggle_item_perks(item: LootItem, is_equipped: bool) -> void:
+	for perk in item.perks:
+		var perk_key: String = perk.get("name", "Unknown")
+		if perk_key == "Unknown": continue
+		
+		if is_equipped:
+			if not active_perks.has(perk_key):
+				active_perks.append(perk_key)
+				print("Perk Activated: ", perk_key)
+		else:
+			if active_perks.has(perk_key):
+				active_perks.erase(perk_key)
+				print("Perk Deactivated: ", perk_key)
+
+func has_perk(perk_name: String) -> bool:
+	return active_perks.has(perk_name)

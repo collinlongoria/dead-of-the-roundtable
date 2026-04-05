@@ -24,19 +24,27 @@
   "helmet_rarities": {
 	"common": {
 	  "name": "Cloth Hat",
-	  "icon": "helmet_common.png"
+	  "icon": "helmet_common.png",
+	  "perk_count": 0,
+	  "stat_count": 1
 	},
 	"rare": {
 	  "name": "Leather Cap",
-	  "icon": "helmet_rare.png"
+	  "icon": "helmet_rare.png",
+	  "perk_count": 1,
+	  "stat_count": 2
 	},
 	"epic": {
 	  "name": "Iron Helmet",
-	  "icon": "helmet_epic.png"
+	  "icon": "helmet_epic.png",
+	  "perk_count": 1,
+	  "stat_count": 3
 	},
 	"legendary": {
 	  "name": "Steel Helmet",
-	  "icon": "helmet_legendary.png"
+	  "icon": "helmet_legendary.png",
+	  "perk_count": 2,
+	  "stat_count": 3
 	}
   }
 }

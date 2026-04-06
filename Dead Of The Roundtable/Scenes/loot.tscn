@@ -1,23 +1,18 @@
 [gd_scene format=3 uid="uid://cbhn18ceowcmr"]
 
 [ext_resource type="Script" uid="uid://bqf1iywfwvo55" path="res://Scripts/loot.gd" id="1_dvcho"]
-[ext_resource type="PackedScene" uid="uid://bhorwfysm8v74" path="res://Scenes/item_card.tscn" id="1_gg2i2"]
 [ext_resource type="Texture2D" uid="uid://b4bl3cmwy0cut" path="res://Assets/Sprites/helmet_legendary.png" id="2_lk60n"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h4ol7"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_50uj4"]
-transparency = 1
 albedo_texture = ExtResource("2_lk60n")
-uv1_scale = Vector3(1.78, 1.78, 1.78)
+uv1_scale = Vector3(8.655, 8.655, 8.655)
 uv1_offset = Vector3(0.175, 0.055, 0)
 texture_filter = 2
 
 [sub_resource type="BoxMesh" id="BoxMesh_p5cyu"]
 material = SubResource("StandardMaterial3D_50uj4")
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_rg653"]
-viewport_path = NodePath("SubViewport")
 
 [node name="Loot" type="RigidBody3D" unique_id=1726042924]
 collision_layer = 3
@@ -29,17 +24,5 @@ shape = SubResource("BoxShape3D_h4ol7")
 [node name="Mesh" type="MeshInstance3D" parent="." unique_id=829572147]
 mesh = SubResource("BoxMesh_p5cyu")
 
-[node name="UIAnchor" type="Node3D" parent="." unique_id=536594316]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.5, 0)
-
-[node name="Sprite" type="Sprite3D" parent="UIAnchor" unique_id=270731556]
-billboard = 1
-texture = SubResource("ViewportTexture_rg653")
-
-[node name="SubViewport" type="SubViewport" parent="." unique_id=85402656]
-transparent_bg = true
-canvas_item_default_texture_filter = 0
-size = Vector2i(200, 240)
-
-[node name="ItemCard" parent="SubViewport" unique_id=2049727658 instance=ExtResource("1_gg2i2")]
-z_as_relative = false
+[node name="UIAnchor" type="Marker3D" parent="." unique_id=613380969]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7740577, 0)

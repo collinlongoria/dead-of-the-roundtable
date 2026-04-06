@@ -64,9 +64,6 @@ transform = Transform3D(27.4, 0, 0, 0, 27.4, 0, 0, 0, 27.4, 0, 0.96467566, 0)
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1978550456]
 mesh = SubResource("PlaneMesh_8nl3u")
 
-[node name="Loot" parent="StaticBody3D/MeshInstance3D" unique_id=1726042924 instance=ExtResource("5_rj37j")]
-transform = Transform3D(0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, 0, 0.054242183, 0.10313774)
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=2123312885]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0128479, -0.24804688, 0.022888184)
 shape = SubResource("BoxShape3D_utscr")
@@ -82,3 +79,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.622633, 15.701743)
 
 [node name="LavaTile" parent="." unique_id=1715686303 instance=ExtResource("8_utscr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05105, 8.350797)
+
+[node name="Loot" parent="." unique_id=1726042924 instance=ExtResource("5_rj37j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4509115, 2.825974)

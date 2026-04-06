@@ -16,12 +16,11 @@ corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
 [node name="ItemCard" type="Control" unique_id=2049727658 node_paths=PackedStringArray("stat_labels", "perk_labels")]
+custom_minimum_size = Vector2(200, 240)
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
+offset_right = 200.0
+offset_bottom = 240.0
 script = ExtResource("1_fyp8p")
 stat_labels = [NodePath("Background/AlignmentContainer/Container/StatIncrease"), NodePath("Background/AlignmentContainer/Container/StatIncrease2"), NodePath("Background/AlignmentContainer/Container/StatIncrease3")]
 perk_labels = [NodePath("Background/AlignmentContainer/Container/Perk4"), NodePath("Background/AlignmentContainer/Container/Perk5"), NodePath("Background/AlignmentContainer/Container/Perk6")]

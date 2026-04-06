@@ -175,7 +175,7 @@ func _handle_interaction() -> void:
 			current_target = collider
 			current_target.focus()
 			
-		# Handle the click (assuming you have an "interact" input action)
+		# Handle the click
 		if Input.is_action_just_pressed("interact"):
 			current_target.interact(self)
 			

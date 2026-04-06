@@ -7,6 +7,8 @@ signal health_changed(new_health: float, max_health: float)
 @onready var mesh: MeshInstance3D = $PlayerMesh
 @onready var spell_spawn_point: Marker3D = $PlayerCamera/SpellSpawnPoint
 @onready var interact_ray: RayCast3D = $PlayerCamera/InteractRay
+@onready var sub_viewport: SubViewport = $OutlineViewport
+@onready var post_process_quad: MeshInstance3D = $PlayerCamera/DepthMesh
 
 # Loot
 @export_group("Equipment")
@@ -78,6 +80,10 @@ func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
 
 func _ready() -> void:
+	var quad_material: ShaderMaterial = post_process_quad.get_active_material(0)
+	if quad_material:
+		quad_material.set_shader_parameter("proxy_color_tex", sub_viewport.get_texture())
+	
 	if is_multiplayer_authority():
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		
@@ -115,7 +121,9 @@ func _unhandled_input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority():
 		return
-		
+	
+	sub_viewport.size = get_viewport().size
+	
 	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	var on_floor := is_on_floor()
 

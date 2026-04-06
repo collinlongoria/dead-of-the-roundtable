@@ -98,4 +98,8 @@ func _spawn_player(id: int) -> void:
 	else:
 		push_warning("PlayerSpawn node not found in the world! Defaulting to origin.")
 	
+	var hud = current_world.find_child("Hud")
+	
+	if hud and hud is Control:
+		hud.set_player_camera(player.find_child("PlayerCamera"))
 	

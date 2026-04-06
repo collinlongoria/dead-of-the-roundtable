@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://cmrx8o527ejlr"]
+
+[ext_resource type="Shader" uid="uid://cvnsyntv1wx5p" path="res://Resources/Materials/outline_composite.gdshader" id="1_irgwd"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_irgwd")
+shader_parameter/outline_width = 4.0
+shader_parameter/global_glow = 1.0
+shader_parameter/depth_bias = 0.05

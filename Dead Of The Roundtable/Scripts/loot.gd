@@ -1,14 +1,27 @@
 extends RigidBody3D
 class_name LootDrop
 
+@export var outline_color: Color = Color(0.2, 0.8, 0.2, 1.0)
+@export var hover_multiplier: float = 3.0
+@export var proxy_shader: Shader
 
 @export var item_data: LootItem
+
+@onready var proxy_mesh: MeshInstance3D = $OutlineProxy
+var proxy_material: ShaderMaterial
 
 const ITEM_CARD_SCENE: PackedScene = preload("res://Scenes/item_card.tscn")
 var active_card: ItemCard = null
 var viewing_player: CharacterBody3D = null
 
 func _ready() -> void:
+	proxy_material = ShaderMaterial.new()
+	
+	proxy_material.shader = proxy_shader
+	proxy_material.set_shader_parameter("outline_color", outline_color)
+	
+	proxy_mesh.material_override = proxy_material
+	
 	if item_data:
 		_refresh_card()
 	
@@ -62,11 +75,15 @@ func focus(player: CharacterBody3D = null) -> void:
 	active_card.scale = Vector2(1.4,1.4)
 	
 	active_card.setup_card(item_data, viewing_player)
+	
+	proxy_material.set_shader_parameter("outline_color", outline_color * hover_multiplier)
 
 func unfocus() -> void:
 	if active_card:
 		active_card.queue_free()
 		active_card = null
+		
+	proxy_material.set_shader_parameter("outline_color", outline_color)
 
 func _process(_delta: float) -> void:
 	if active_card and is_instance_valid(active_card):

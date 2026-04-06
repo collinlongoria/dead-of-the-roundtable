@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://bvbxtf6nwtyp1"]
 
 [ext_resource type="Script" uid="uid://dftsnc7yuv6jn" path="res://Scripts/hud.gd" id="1_6fbih"]
-[ext_resource type="Script" uid="uid://cu6o1f7a4ar2t" path="res://Scripts/outline_camera.gd" id="1_bjfho"]
 [ext_resource type="Texture2D" uid="uid://crshtyp8ewpsp" path="res://Assets/Sprites/bad_hand.png" id="1_e0onf"]
 [ext_resource type="PackedScene" uid="uid://cj0qa6mtcm1m4" path="res://Scenes/profile_hud.tscn" id="3_bjfho"]
 
@@ -14,24 +13,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_6fbih")
-
-[node name="OutlineContainer" type="SubViewportContainer" parent="." unique_id=1135703445]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="OutlineViewport" type="SubViewport" parent="OutlineContainer" unique_id=16725170]
-transparent_bg = true
-handle_input_locally = false
-size = Vector2i(1920, 1080)
-render_target_update_mode = 4
-
-[node name="OutlineCamera" type="Camera3D" parent="OutlineContainer/OutlineViewport" unique_id=351485077]
-cull_mask = 2
-script = ExtResource("1_bjfho")
 
 [node name="HandTexture" type="TextureRect" parent="." unique_id=1625981799]
 layout_mode = 1

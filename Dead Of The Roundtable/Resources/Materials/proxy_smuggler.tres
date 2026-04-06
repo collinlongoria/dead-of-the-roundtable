@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://ctktoyeoo6fig"]
+
+[ext_resource type="Shader" uid="uid://dhotk12hfeja8" path="res://Resources/Materials/proxy_smuggler.gdshader" id="1_7x64r"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_7x64r")
+shader_parameter/outline_color = Color(0.2, 0.8, 0.2, 1)

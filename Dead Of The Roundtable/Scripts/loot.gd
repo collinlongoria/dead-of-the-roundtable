@@ -1,6 +1,7 @@
 extends RigidBody3D
 class_name LootDrop
 
+
 @export var item_data: LootItem
 
 const ITEM_CARD_SCENE: PackedScene = preload("res://Scenes/item_card.tscn")
@@ -53,7 +54,7 @@ func _refresh_card() -> void:
 func focus(player: CharacterBody3D = null) -> void:
 	if not item_data or active_card: 
 		return
-		
+	
 	viewing_player = player # Store them for refresh calls
 	active_card = ITEM_CARD_SCENE.instantiate()
 	

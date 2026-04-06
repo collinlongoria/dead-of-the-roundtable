@@ -168,18 +168,15 @@ func _handle_interaction() -> void:
 	# If we are looking at a LootDrop
 	if collider is LootDrop:
 		if current_target != collider:
-			# Unfocus the old one if we quickly looked from one drop to another
 			if current_target and current_target.has_method("unfocus"):
 				current_target.unfocus()
 			
 			current_target = collider
-			current_target.focus()
+			current_target.focus(self)
 			
-		# Handle the click
 		if Input.is_action_just_pressed("interact"):
 			current_target.interact(self)
 			
-	# If we are looking at nothing, but we previously had a target
 	elif current_target:
 		if current_target.has_method("unfocus"):
 			current_target.unfocus()

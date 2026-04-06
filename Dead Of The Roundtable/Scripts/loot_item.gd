@@ -19,7 +19,7 @@ func get_stat_lines() -> Array[String]:
 		
 		var stat_string: String = PlayerStats.Stat.keys()[stat_enum].capitalize().replace("_", " ")
 		
-		lines.append("[color=green]+%d%% %s[/color]" % [percentage, stat_string])
+		lines.append("+%d%% %s" % [percentage, stat_string])
 	
 	return lines
 	

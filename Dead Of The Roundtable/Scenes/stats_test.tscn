@@ -82,3 +82,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05105, 8.350797)
 
 [node name="Loot" parent="." unique_id=1726042924 instance=ExtResource("5_rj37j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4509115, 2.825974)
+
+[node name="Loot2" parent="." unique_id=1953380364 instance=ExtResource("5_rj37j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7824981, 2.4509115, 2.825974)
+
+[node name="Loot3" parent="." unique_id=991403584 instance=ExtResource("5_rj37j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.159771, 2.4509115, 2.825974)
+
+[node name="Loot4" parent="." unique_id=726091127 instance=ExtResource("5_rj37j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.707979, 2.4509115, 2.825974)

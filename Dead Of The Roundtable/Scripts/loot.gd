@@ -5,25 +5,62 @@ class_name LootDrop
 
 const ITEM_CARD_SCENE: PackedScene = preload("res://Scenes/item_card.tscn")
 var active_card: ItemCard = null
+var viewing_player: CharacterBody3D = null
 
 func _ready() -> void:
 	if item_data:
 		_refresh_card()
 	
-	item_data = LootDatabase.generate_loot("helmet", "rare")
+	# can put this somewhere else later
+	_roll_loot()
+
+func _roll_loot() -> void:
+	var rarity_roll: int = round(randf_range(1,100))
+	var type_roll: int = round(randf_range(1,1)) # change this later
+	
+	var rarity: String = ""
+	var type: String = ""
+	
+	if rarity_roll <= 30:
+		rarity = "common"
+	elif rarity_roll <= 60:
+		rarity = "rare"
+	elif rarity_roll <= 90:
+		rarity = "epic"
+	else:
+		rarity = "legendary"
+	
+	match type_roll:
+		1:
+			type = "helmet"
+		2:
+			type = "chest"
+		3:
+			type = "gauntlets"
+		4:
+			type = "boots"
+		5:
+			type = "amulet"
+		6:
+			type = "ring"
+	
+	item_data = LootDatabase.generate_loot(type, rarity)
 
 func _refresh_card() -> void:
 	if active_card:
-		active_card.setup_card(item_data)
+		active_card.setup_card(item_data, viewing_player)
 
-func focus() -> void:
+func focus(player: CharacterBody3D = null) -> void:
 	if not item_data or active_card: 
 		return
 		
+	viewing_player = player # Store them for refresh calls
 	active_card = ITEM_CARD_SCENE.instantiate()
 	
 	get_tree().root.add_child(active_card) 
-	active_card.setup_card(item_data)
+	active_card.scale = Vector2(1.4,1.4)
+	
+	active_card.setup_card(item_data, viewing_player)
 
 func unfocus() -> void:
 	if active_card:

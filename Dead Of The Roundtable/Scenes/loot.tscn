@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bqf1iywfwvo55" path="res://Scripts/loot.gd" id="1_dvcho"]
 [ext_resource type="Shader" uid="uid://dhotk12hfeja8" path="res://Resources/Materials/proxy_smuggler.gdshader" id="2_dvcho"]
 [ext_resource type="Texture2D" uid="uid://b4bl3cmwy0cut" path="res://Assets/Sprites/helmet_legendary.png" id="2_lk60n"]
+[ext_resource type="Shader" uid="uid://bh1m4w5ce8d3h" path="res://Resources/Materials/proxy_color.gdshader" id="3_lk60n"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h4ol7"]
 
@@ -18,7 +19,8 @@ material = SubResource("StandardMaterial3D_50uj4")
 [node name="Loot" type="RigidBody3D" unique_id=1726042924]
 collision_layer = 3
 script = ExtResource("1_dvcho")
-proxy_shader = ExtResource("2_dvcho")
+depth_proxy_shader = ExtResource("2_dvcho")
+color_proxy_shader = ExtResource("3_lk60n")
 
 [node name="Collider" type="CollisionShape3D" parent="." unique_id=457288305]
 shape = SubResource("BoxShape3D_h4ol7")
@@ -29,6 +31,10 @@ mesh = SubResource("BoxMesh_p5cyu")
 [node name="UIAnchor" type="Marker3D" parent="." unique_id=613380969]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7740577, 0)
 
-[node name="OutlineProxy" type="MeshInstance3D" parent="." unique_id=245314202]
+[node name="OutlineDepthProxy" type="MeshInstance3D" parent="." unique_id=245314202]
 layers = 2
+mesh = SubResource("BoxMesh_p5cyu")
+
+[node name="OutlineColorProxy" type="MeshInstance3D" parent="." unique_id=84786487]
+layers = 4
 mesh = SubResource("BoxMesh_p5cyu")

@@ -2,25 +2,31 @@ extends RigidBody3D
 class_name LootDrop
 
 @export var outline_color: Color = Color(0.2, 0.8, 0.2, 1.0)
-@export var hover_multiplier: float = 3.0
-@export var proxy_shader: Shader
+@export var outline_color2: Color = Color(0.757, 0.253, 0.09, 1.0)
+@export var hover_multiplier: float = 13.0
+@export var depth_proxy_shader: Shader
+@export var color_proxy_shader: Shader
 
 @export var item_data: LootItem
 
-@onready var proxy_mesh: MeshInstance3D = $OutlineProxy
-var proxy_material: ShaderMaterial
+@onready var depth_proxy_mesh: MeshInstance3D = $OutlineDepthProxy
+@onready var color_proxy_mesh: MeshInstance3D = $OutlineColorProxy
+var depth_proxy_material: ShaderMaterial
+var color_proxy_material: ShaderMaterial
 
 const ITEM_CARD_SCENE: PackedScene = preload("res://Scenes/item_card.tscn")
 var active_card: ItemCard = null
 var viewing_player: CharacterBody3D = null
 
 func _ready() -> void:
-	proxy_material = ShaderMaterial.new()
-	
-	proxy_material.shader = proxy_shader
-	proxy_material.set_shader_parameter("outline_color", outline_color)
-	
-	proxy_mesh.material_override = proxy_material
+	depth_proxy_material = ShaderMaterial.new()
+	depth_proxy_material.shader = depth_proxy_shader
+	depth_proxy_mesh.material_override = depth_proxy_material
+
+	color_proxy_material = ShaderMaterial.new()
+	color_proxy_material.shader = color_proxy_shader
+	color_proxy_material.set_shader_parameter("outline_color", Vector3(outline_color.r, outline_color.g, outline_color.b))
+	color_proxy_mesh.material_override = color_proxy_material
 	
 	if item_data:
 		_refresh_card()
@@ -76,14 +82,15 @@ func focus(player: CharacterBody3D = null) -> void:
 	
 	active_card.setup_card(item_data, viewing_player)
 	
-	proxy_material.set_shader_parameter("outline_color", outline_color * hover_multiplier)
+	var hovered: Color = outline_color2
+	color_proxy_material.set_shader_parameter("outline_color", Vector3(hovered.r, hovered.g, hovered.b))
 
 func unfocus() -> void:
 	if active_card:
 		active_card.queue_free()
 		active_card = null
 		
-	proxy_material.set_shader_parameter("outline_color", outline_color)
+	color_proxy_material.set_shader_parameter("outline_color", Vector3(outline_color.r, outline_color.g, outline_color.b))
 
 func _process(_delta: float) -> void:
 	if active_card and is_instance_valid(active_card):

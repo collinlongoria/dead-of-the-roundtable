@@ -45,7 +45,7 @@ mesh = SubResource("CapsuleMesh_v0iea")
 
 [node name="PlayerCamera" type="Camera3D" parent="." unique_id=919823836]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
-cull_mask = 1048573
+cull_mask = 1048569
 current = true
 
 [node name="SpellSpawnPoint" type="Marker3D" parent="PlayerCamera" unique_id=4784692]
@@ -56,22 +56,24 @@ target_position = Vector3(0, 0, -3)
 collision_mask = 2
 
 [node name="DepthMesh" type="MeshInstance3D" parent="PlayerCamera" unique_id=479412736]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.95787174)
 extra_cull_margin = 16000.0
 mesh = SubResource("QuadMesh_6t5aa")
-
-[node name="RemoteTransform3D" type="RemoteTransform3D" parent="PlayerCamera" unique_id=690887097]
-remote_path = NodePath("../../OutlineViewport/OutlineCamera")
 
 [node name="PlayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=862244524]
 replication_config = SubResource("SceneReplicationConfig_v0iea")
 
-[node name="OutlineViewport" type="SubViewport" parent="." unique_id=948518583]
-transparent_bg = true
+[node name="OutlineDepthViewport" type="SubViewport" parent="." unique_id=948518583]
 handle_input_locally = false
 size = Vector2i(1920, 1080)
 render_target_update_mode = 4
 
-[node name="OutlineCamera" type="Camera3D" parent="OutlineViewport" unique_id=1615537511]
+[node name="OutlineDepthCamera" type="Camera3D" parent="OutlineDepthViewport" unique_id=1615537511]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
 cull_mask = 2
+
+[node name="OutlineColorViewport" type="SubViewport" parent="." unique_id=2040771367]
+handle_input_locally = false
+size = Vector2i(1920, 1080)
+
+[node name="OutlineColorCamera" type="Camera3D" parent="OutlineColorViewport" unique_id=1078265655]
+cull_mask = 4

@@ -7,8 +7,12 @@ signal health_changed(new_health: float, max_health: float)
 @onready var mesh: MeshInstance3D = $PlayerMesh
 @onready var spell_spawn_point: Marker3D = $PlayerCamera/SpellSpawnPoint
 @onready var interact_ray: RayCast3D = $PlayerCamera/InteractRay
-@onready var sub_viewport: SubViewport = $OutlineViewport
 @onready var post_process_quad: MeshInstance3D = $PlayerCamera/DepthMesh
+
+@onready var sub_viewport_depth: SubViewport = $OutlineDepthViewport
+@onready var sub_viewport_color: SubViewport = $OutlineColorViewport
+@onready var outline_camera_depth: Camera3D = $OutlineDepthViewport/OutlineDepthCamera
+@onready var outline_camera_color: Camera3D = $OutlineColorViewport/OutlineColorCamera
 
 # Loot
 @export_group("Equipment")
@@ -82,7 +86,8 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	var quad_material: ShaderMaterial = post_process_quad.get_active_material(0)
 	if quad_material:
-		quad_material.set_shader_parameter("proxy_color_tex", sub_viewport.get_texture())
+		quad_material.set_shader_parameter("proxy_depth_tex", sub_viewport_depth.get_texture())
+		quad_material.set_shader_parameter("proxy_color_tex", sub_viewport_color.get_texture())
 	
 	if is_multiplayer_authority():
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -100,6 +105,21 @@ func _ready() -> void:
 	if camera:
 		camera.current = is_multiplayer_authority()
 		original_camera_y = camera.position.y
+	
+	# Black environments on both outline cameras so they don't render the sky
+	var env := Environment.new()
+	env.background_mode = Environment.BG_COLOR
+	env.background_color = Color(0, 0, 0, 1)
+	env.ambient_light_source = Environment.AMBIENT_SOURCE_DISABLED
+	env.tonemap_mode = Environment.TONE_MAPPER_LINEAR
+	outline_camera_depth.environment = env
+	outline_camera_color.environment = env.duplicate()
+
+	# Initial viewport size + connect to size changes
+	_resize_outline_viewports()
+	get_viewport().size_changed.connect(_resize_outline_viewports)
+	
+	_sync_outline_cameras()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -121,8 +141,6 @@ func _unhandled_input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority():
 		return
-	
-	sub_viewport.size = get_viewport().size
 	
 	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	var on_floor := is_on_floor()
@@ -169,6 +187,30 @@ func _physics_process(delta: float) -> void:
 	_handle_shooting()
 	
 	_handle_interaction()
+	
+
+func _process(delta: float) -> void:
+	_sync_outline_cameras()
+
+func _resize_outline_viewports() -> void:
+	var s: Vector2i = get_viewport().size
+	sub_viewport_depth.size = s
+	sub_viewport_color.size = s
+
+func _sync_outline_cameras() -> void:
+	outline_camera_depth.global_transform = camera.global_transform
+	outline_camera_depth.fov = camera.fov
+	outline_camera_depth.near = camera.near
+	outline_camera_depth.far = camera.far
+	outline_camera_depth.projection = camera.projection
+	outline_camera_depth.keep_aspect = camera.keep_aspect
+
+	outline_camera_color.global_transform = camera.global_transform
+	outline_camera_color.fov = camera.fov
+	outline_camera_color.near = camera.near
+	outline_camera_color.far = camera.far
+	outline_camera_color.projection = camera.projection
+	outline_camera_color.keep_aspect = camera.keep_aspect
 
 func _handle_interaction() -> void:
 	var collider = interact_ray.get_collider()

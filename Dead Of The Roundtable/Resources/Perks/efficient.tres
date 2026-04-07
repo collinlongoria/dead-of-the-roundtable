@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="Perk" format=3 uid="uid://dqm7u28koiqtt"]
+
+[ext_resource type="Script" uid="uid://ow1orejfpstp" path="res://Scripts/perk.gd" id="1_16b5p"]
+
+[resource]
+script = ExtResource("1_16b5p")
+metadata/_custom_type_script = "uid://ow1orejfpstp"

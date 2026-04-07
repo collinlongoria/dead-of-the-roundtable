@@ -5,6 +5,7 @@ enum Stat {
 	HEALTH,
 	HEALTH_REGEN,
 	THORNS,
+	OVERSHIELD,
 	
 	MOVEMENT_SPEED,
 	
@@ -19,6 +20,9 @@ enum Stat {
 	
 	ELEMENTAL_DAMAGE_MULTIPLIER,
 	ELEMENTAL_CHANCE_MULTIPLIER,
+	
+	MAXIMUM_MANA,
+	MAXIMUM_STORED_MANA
 }
 
 signal stat_changed(stat: Stat, new_value: float)

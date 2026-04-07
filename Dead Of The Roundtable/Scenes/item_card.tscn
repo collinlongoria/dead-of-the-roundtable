@@ -72,6 +72,10 @@ size_flags_horizontal = 4
 [node name="StatIncrease" type="RichTextLabel" parent="Background/AlignmentContainer/Container" unique_id=269078109]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 10
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
 theme_override_constants/outline_size = 6
 theme_override_fonts/normal_font = ExtResource("1_yb78l")
 theme_override_fonts/bold_font = ExtResource("1_yb78l")
@@ -86,6 +90,10 @@ horizontal_alignment = 1
 [node name="StatIncrease2" type="RichTextLabel" parent="Background/AlignmentContainer/Container" unique_id=1377556068]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 10
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
 theme_override_constants/outline_size = 6
 theme_override_fonts/normal_font = ExtResource("1_yb78l")
 theme_override_fonts/bold_font = ExtResource("1_yb78l")
@@ -100,6 +108,10 @@ horizontal_alignment = 1
 [node name="StatIncrease3" type="RichTextLabel" parent="Background/AlignmentContainer/Container" unique_id=1440658485]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 10
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
 theme_override_constants/outline_size = 6
 theme_override_fonts/normal_font = ExtResource("1_yb78l")
 theme_override_fonts/bold_font = ExtResource("1_yb78l")
@@ -119,6 +131,10 @@ size_flags_horizontal = 4
 [node name="Perk4" type="RichTextLabel" parent="Background/AlignmentContainer/Container" unique_id=961722246]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 10
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
 theme_override_constants/outline_size = 6
 theme_override_fonts/normal_font = ExtResource("1_yb78l")
 theme_override_fonts/bold_font = ExtResource("1_yb78l")
@@ -133,6 +149,10 @@ horizontal_alignment = 1
 [node name="Perk5" type="RichTextLabel" parent="Background/AlignmentContainer/Container" unique_id=1213811696]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 10
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
 theme_override_constants/outline_size = 6
 theme_override_fonts/normal_font = ExtResource("1_yb78l")
 theme_override_fonts/bold_font = ExtResource("1_yb78l")
@@ -147,6 +167,10 @@ horizontal_alignment = 1
 [node name="Perk6" type="RichTextLabel" parent="Background/AlignmentContainer/Container" unique_id=1409638842]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 10
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
 theme_override_constants/outline_size = 6
 theme_override_fonts/normal_font = ExtResource("1_yb78l")
 theme_override_fonts/bold_font = ExtResource("1_yb78l")

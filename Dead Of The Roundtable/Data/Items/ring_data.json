@@ -1,0 +1,42 @@
+{
+  "ring_perks": {
+	"1spellslot": {
+	  "name": "+1 Spell Slot",
+	  "description": "Adds one spell slot."
+	},
+	"2spellslot": {
+	  "name": "+2 Spell Slots",
+	  "description": "Adds two spell slots."
+	},
+	"3spellslot": {
+	  "name": "+3 Spell Slots",
+	  "description": "Adds three spell slots."
+	}
+  },
+  "ring_rarities": {
+	"common": {
+	  "name": "Metal Band",
+	  "icon": "ring_common.png",
+	  "perk_count": 0,
+	  "stat_count": 3
+	},
+	"rare": {
+	  "name": "Gold Band",
+	  "icon": "ring_common.png",
+	  "perk_count": 1,
+	  "stat_count": 3
+	},
+	"epic": {
+	  "name": "Ruby Ring",
+	  "icon": "ring_epic.png",
+	  "perk_count": 1,
+	  "stat_count": 3
+	},
+	"legendary": {
+	  "name": "Diamond Ring",
+	  "icon": "ring_epic.png",
+	  "perk_count": 1,
+	  "stat_count": 3
+	}
+  }
+}

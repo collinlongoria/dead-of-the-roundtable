@@ -1,0 +1,50 @@
+{
+  "gauntlets_perks": {
+	"attuned": {
+	  "name": "Attuned",
+	  "description": "Enemies have a chance to drop a small mana source."
+	},
+	"pickpocket": {
+	  "name": "Pickpocket",
+	  "description": "Enemies have a chance to drop extra money."
+	},
+	"quick": {
+	  "name": "Quick",
+	  "description": "Swap spells faster."
+	},
+	"phantom": {
+	  "name": "Phantom",
+	  "description": "Spell mana is refilled over time."
+	},
+	"efficient": {
+	  "name": "Efficient",
+	  "description": "Recharging has a small chance not to use stored mana."
+	}
+  },
+  "gauntlets_rarities": {
+	"common": {
+	  "name": "Cloth Wraps",
+	  "icon": "gauntlets_common.png",
+	  "perk_count": 0,
+	  "stat_count": 1
+	},
+	"rare": {
+	  "name": "Leather Bracers",
+	  "icon": "gauntlets_rare.png",
+	  "perk_count": 1,
+	  "stat_count": 2
+	},
+	"epic": {
+	  "name": "Iron Gloves",
+	  "icon": "gauntlets_epic.png",
+	  "perk_count": 1,
+	  "stat_count": 3
+	},
+	"legendary": {
+	  "name": "Steel Gauntlets",
+	  "icon": "gauntlets_epic.png",
+	  "perk_count": 2,
+	  "stat_count": 3
+	}
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "amulet_perks": {
+	"gambler": {
+	  "name": "Gambler",
+	  "description": "Spells have a chance to do double DAMAGE, but also have a small cahnce to do zero DAMAGE."
+	},
+	"dealer": {
+	  "name": "Dealer",
+	  "description": "Every 4th spell cast deals double DAMAGE."
+	},
+	"electric": {
+	  "name": "Electric",
+	  "description": "Recharging creates an ELECTRIC discharge and stuns nearby zombies."
+	},
+	"intelligent": {
+	  "name": "Intelligent",
+	  "description": "Further increase ELEMENTAL DAMAGE."
+	},
+	"calculated": {
+	  "name": "Calculated",
+	  "description": "Reduce elemental effect cooldowns."
+	}
+  },
+  "amulet_rarities": {
+	"common": {
+	  "name": "Tooth Necklace",
+	  "icon": "amulet_common.png",
+	  "perk_count": 0,
+	  "stat_count": 1
+	},
+	"rare": {
+	  "name": "Beaded Necklace",
+	  "icon": "amulet_rare.png",
+	  "perk_count": 1,
+	  "stat_count": 2
+	},
+	"epic": {
+	  "name": "Gilded Amulet",
+	  "icon": "amulet_epic.png",
+	  "perk_count": 1,
+	  "stat_count": 3
+	},
+	"legendary": {
+	  "name": "Enchanted Gilded Amulet",
+	  "icon": "amulet_epic.png",
+	  "perk_count": 2,
+	  "stat_count": 3
+	}
+  }
+}

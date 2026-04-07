@@ -1,0 +1,50 @@
+{
+  "boots_perks": {
+	"dexterous": {
+	  "name": "Dexterous",
+	  "description": "Cast while sprinting."
+	},
+	"stamina": {
+	  "name": "Stamina",
+	  "description": "Increase non-forward sprinting speed."
+	},
+	"dodger": {
+	  "name": "Dodger",
+	  "description": "While sprinting, incoming damage is reduced."
+	},
+	"fast": {
+	  "name": "Fast",
+	  "description": "Increase spell cast rate."
+	},
+	"kicker": {
+	  "name": "Kicker",
+	  "description": "Zombies at low health have a chance to die immediately when shot."
+	}
+  },
+  "boots_rarities": {
+	"common": {
+	  "name": "Cloth Sandals",
+	  "icon": "boots_common.png",
+	  "perk_count": 0,
+	  "stat_count": 1
+	},
+	"rare": {
+	  "name": "Leather Boots",
+	  "icon": "boots_common.png",
+	  "perk_count": 1,
+	  "stat_count": 2
+	},
+	"epic": {
+	  "name": "Iron Boots",
+	  "icon": "boots_epic.png",
+	  "perk_count": 1,
+	  "stat_count": 3
+	},
+	"legendary": {
+	  "name": "Steel Boots",
+	  "icon": "boots_epic.png",
+	  "perk_count": 2,
+	  "stat_count": 3
+	}
+  }
+}

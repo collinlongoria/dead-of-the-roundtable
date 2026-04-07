@@ -28,5 +28,13 @@ func _on_item_list_item_selected(index: int) -> void:
 			type = "helmet"
 		1:
 			type = "chest"
+		2:
+			type = "gauntlets"
+		3:
+			type = "boots"
+		4:
+			type = "amulet"
+		5:
+			type = "ring"
 		_:
 			type = "helmet"

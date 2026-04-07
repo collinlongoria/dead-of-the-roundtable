@@ -12,12 +12,48 @@ const POSSIBLE_STATS: Dictionary = {
 		PlayerStats.Stat.HEALTH,
 		PlayerStats.Stat.HEALTH_REGEN,
 		PlayerStats.Stat.THORNS
+	],
+	"gauntlets": [
+		PlayerStats.Stat.RELOAD_SPEED_MULTIPLIER,
+		PlayerStats.Stat.MAXIMUM_MANA,
+		PlayerStats.Stat.MAXIMUM_STORED_MANA
+	],
+	"boots": [
+		PlayerStats.Stat.MOVEMENT_SPEED,
+		PlayerStats.Stat.CRITICAL_CHANCE_MULTIPLIER,
+		PlayerStats.Stat.CRITICAL_DAMAGE_MULTIPLIER
+	],
+	"amulet": [
+		PlayerStats.Stat.OVERSHIELD,
+		PlayerStats.Stat.ELEMENTAL_CHANCE_MULTIPLIER,
+		PlayerStats.Stat.ELEMENTAL_DAMAGE_MULTIPLIER
+	],
+	"ring": [
+		PlayerStats.Stat.DAMAGE_MULTIPLIER,
+		PlayerStats.Stat.ATTACK_SPEED_MULTIPLIER,
+		PlayerStats.Stat.KNOCKBACK_MULTIPLIER,
+		PlayerStats.Stat.HEALTH,
+		PlayerStats.Stat.HEALTH_REGEN,
+		PlayerStats.Stat.THORNS,
+		PlayerStats.Stat.RELOAD_SPEED_MULTIPLIER,
+		PlayerStats.Stat.MAXIMUM_MANA,
+		PlayerStats.Stat.MAXIMUM_STORED_MANA,
+		PlayerStats.Stat.MOVEMENT_SPEED,
+		PlayerStats.Stat.CRITICAL_CHANCE_MULTIPLIER,
+		PlayerStats.Stat.CRITICAL_DAMAGE_MULTIPLIER,
+		PlayerStats.Stat.OVERSHIELD,
+		PlayerStats.Stat.ELEMENTAL_CHANCE_MULTIPLIER,
+		PlayerStats.Stat.ELEMENTAL_DAMAGE_MULTIPLIER
 	]
 }
 
 func _ready() -> void:
 	_load_json("helmet", "res://Data/Items/helmet_data.json")
 	_load_json("chest", "res://Data/Items/chest_data.json")
+	_load_json("gauntlets", "res://Data/Items/gauntlets_data.json")
+	_load_json("boots", "res://Data/Items/boots_data.json")
+	_load_json("amulet", "res://Data/Items/amulet_data.json")
+	_load_json("ring", "res://Data/Items/ring_data.json")
 
 func _load_json(type_key: String, file_path: String) -> void:
 	if not FileAccess.file_exists(file_path):
@@ -88,30 +124,51 @@ func generate_loot(type_key: String, rarity_key: String) -> LootItem:
 			new_item.stats[stat_enum] = increase
 	
 	if perk_count > 0 and not perks_db.is_empty():
-		var available_perks: Array = perks_db.keys()
-		available_perks.shuffle()
+		# ring logic
+		if new_item.item_type == "ring":
+			var target_perk_key: String = ""
 
-		var perks_to_add: int = min(perk_count, available_perks.size())
+			match rarity_key:
+				"rare": target_perk_key = "1spellslot"
+				"epic": target_perk_key = "2spellslot"
+				"legendary": target_perk_key = "3spellslot"
 
-		for i in range(perks_to_add):
-			var perk_key: String = available_perks[i]
+			if target_perk_key != "" and perks_db.has(target_perk_key):
+				var perk_json_data: Dictionary = perks_db[target_perk_key]
+				var resource_path: String = "res://Resources/Perks/" + target_perk_key + ".tres"
 
-			# Grab the JSON data for UI text/names
-			var perk_json_data: Dictionary = perks_db[perk_key]
+				if ResourceLoader.exists(resource_path):
+					var executable_perk = load(resource_path)
+					executable_perk.perk_name = perk_json_data.get("name", "Unknown")
+					executable_perk.perk_desc = perk_json_data.get("description", "Unknown")
+					new_item.perks.append(executable_perk)
+				else:
+					push_error("Loot Database generated a ring perk but missing logic resource at: " + resource_path)
+		else:
+			var available_perks: Array = perks_db.keys()
+			available_perks.shuffle()
 
-			# Dynamically build the path to the executable logic
-			var resource_path: String = "res://Resources/Perks/" + perk_key + ".tres"
+			var perks_to_add: int = min(perk_count, available_perks.size())
 
-			if ResourceLoader.exists(resource_path):
-				# Load the actual logic Resource
-				var executable_perk = load(resource_path)
+			for i in range(perks_to_add):
+				var perk_key: String = available_perks[i]
 
-				executable_perk.perk_name = perk_json_data.get("name", "Unknown")
-				executable_perk.perk_desc = perk_json_data.get("description", "Unknown")
+				# Grab the JSON data for UI text/names
+				var perk_json_data: Dictionary = perks_db[perk_key]
 
-				# Append the resource
-				new_item.perks.append(executable_perk)
-			else:
-				push_error("Loot Database generated a perk but missing logic resource at: " + resource_path)
+				# Dynamically build the path to the executable logic
+				var resource_path: String = "res://Resources/Perks/" + perk_key + ".tres"
+
+				if ResourceLoader.exists(resource_path):
+					# Load the actual logic Resource
+					var executable_perk = load(resource_path)
+
+					executable_perk.perk_name = perk_json_data.get("name", "Unknown")
+					executable_perk.perk_desc = perk_json_data.get("description", "Unknown")
+
+					# Append the resource
+					new_item.perks.append(executable_perk)
+				else:
+					push_error("Loot Database generated a perk but missing logic resource at: " + resource_path)
 	
 	return new_item

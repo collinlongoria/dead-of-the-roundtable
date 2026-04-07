@@ -38,7 +38,7 @@ func _on_body_entered(body: Node3D) -> void:
 				attacker.process_kill_perks(context)
 		
 		# Tell all clients to show the damage number
-		spawn_damage_number.rpc(global_position, context.final_damage, is_critical)
+		spawn_damage_number.rpc(global_position, context.final_damage, context.is_critical)
 	
 	queue_free()
 

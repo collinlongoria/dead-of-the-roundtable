@@ -36,7 +36,7 @@ func _ready() -> void:
 
 func _roll_loot() -> void:
 	var rarity_roll: int = round(randf_range(1,100))
-	var type_roll: int = round(randf_range(1,1)) # change this later
+	var type_roll: int = round(randf_range(5,5)) # change this later
 	
 	var rarity: String = ""
 	var type: String = ""

@@ -18,6 +18,10 @@ signal health_changed(new_health: float, max_health: float)
 @export_group("Equipment")
 @export var equipped_helmet: LootItem
 @export var equipped_chest: LootItem
+@export var equipped_gauntlets: LootItem
+@export var equipped_boots: LootItem
+@export var equipped_amulet: LootItem
+@export var equipped_ring: LootItem
 
 var active_perks: Array[Perk] = []
 
@@ -187,6 +191,11 @@ func _physics_process(delta: float) -> void:
 	_handle_shooting()
 	
 	_handle_interaction()
+	
+	# fire tick perks
+	for perk in active_perks:
+		if perk.has_method("on_tick"):
+			perk.on_tick(self, delta)
 	
 
 func _process(delta: float) -> void:
@@ -385,11 +394,25 @@ func _cast_spell() -> void:
 	var final_fire_rate = equipped_spell.fire_rate / stats.attack_speed_multiplier
 	var timer := get_tree().create_timer(final_fire_rate)
 	timer.timeout.connect(func(): can_fire = true)
-
-func take_damage(amount: float) -> void:
-	current_health -= amount
-	current_health = clamp(current_health, 0.0, stats.health)
 	
+	# perks
+	for perk in active_perks:
+		if perk.has_method("on_cast"):
+			perk.on_cast(self)
+
+func take_damage(amount: float, attacker: Node3D = null) -> void:
+	var context := HitContext.new()
+	context.victim = self
+	context.attacker = attacker
+	context.base_damage = amount
+	context.final_damage = amount
+	
+	for perk in active_perks:
+		if perk.has_method("modify_incoming_hit"):
+			perk.modify_incoming_hit(context)
+			
+	current_health -= context.final_damage
+	current_health = clamp(current_health, 0.0, stats.health)
 	health_changed.emit(current_health, stats.health)
 
 @rpc("any_peer", "call_local", "reliable")
@@ -435,6 +458,9 @@ func equip_item(new_item: LootItem) -> void:
 		"chest":
 			_swap_gear(equipped_chest, new_item)
 			equipped_chest = new_item
+		"amulet":
+			_swap_gear(equipped_amulet, new_item)
+			equipped_amulet = new_item
 		_:
 			push_error("Player tried to equip unknown item type: ", new_item.item_type)
 

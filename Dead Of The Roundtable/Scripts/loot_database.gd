@@ -167,7 +167,7 @@ func generate_loot(type_key: String, rarity_key: String) -> LootItem:
 					executable_perk.perk_desc = perk_json_data.get("description", "Unknown")
 
 					# Append the resource
-					new_item.perks.append(executable_perk)
+					new_item.perks.append(executable_perk.duplicate(true))
 				else:
 					push_error("Loot Database generated a perk but missing logic resource at: " + resource_path)
 	

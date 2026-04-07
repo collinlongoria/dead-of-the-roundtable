@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dtwheaff3qch7" path="res://Scenes/player.tscn" id="3_ce3w2"]
 [ext_resource type="FontFile" uid="uid://bwmgr6kbypg4c" path="res://Assets/Fonts/Ravenswood Clocktower.otf" id="4_ce3w2"]
 [ext_resource type="FontFile" uid="uid://dxwtbcclixi84" path="res://Assets/Fonts/Bathrind.otf" id="5_n45e2"]
+[ext_resource type="Texture2D" uid="uid://bpxeqj36sbhms" path="res://Assets/Logo/CAVALRY CHARGE!.png" id="6_opfnp"]
 
 [node name="GameManager" type="Node" unique_id=1831519109]
 script = ExtResource("1_28flt")
@@ -13,15 +14,9 @@ player_scene = ExtResource("3_ce3w2")
 
 [node name="UI" type="Control" parent="." unique_id=1119740222]
 layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 0
@@ -34,10 +29,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -92.0
-offset_top = -68.0
-offset_right = 92.0
-offset_bottom = 68.0
+offset_left = -473.5
+offset_top = -135.0
+offset_right = 473.5
+offset_bottom = 135.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -66,3 +61,15 @@ placeholder_text = "IP Address"
 layout_mode = 2
 theme_override_fonts/font = ExtResource("5_n45e2")
 text = "This is a font test. Is this readable? DO you like it?"
+
+[node name="TextureRect" type="TextureRect" parent="UI" unique_id=1079374953]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -200.0
+offset_right = 200.0
+grow_vertical = 0
+texture = ExtResource("6_opfnp")
+expand_mode = 2

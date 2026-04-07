@@ -90,11 +90,28 @@ func generate_loot(type_key: String, rarity_key: String) -> LootItem:
 	if perk_count > 0 and not perks_db.is_empty():
 		var available_perks: Array = perks_db.keys()
 		available_perks.shuffle()
-		
+
 		var perks_to_add: int = min(perk_count, available_perks.size())
-		
+
 		for i in range(perks_to_add):
 			var perk_key: String = available_perks[i]
-			new_item.perks.append(perks_db[perk_key])
+
+			# Grab the JSON data for UI text/names
+			var perk_json_data: Dictionary = perks_db[perk_key]
+
+			# Dynamically build the path to the executable logic
+			var resource_path: String = "res://Resources/Perks/" + perk_key + ".tres"
+
+			if ResourceLoader.exists(resource_path):
+				# Load the actual logic Resource
+				var executable_perk = load(resource_path)
+
+				executable_perk.perk_name = perk_json_data.get("name", "Unknown")
+				executable_perk.perk_desc = perk_json_data.get("description", "Unknown")
+
+				# Append the resource
+				new_item.perks.append(executable_perk)
+			else:
+				push_error("Loot Database generated a perk but missing logic resource at: " + resource_path)
 	
 	return new_item

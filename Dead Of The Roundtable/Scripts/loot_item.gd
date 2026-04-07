@@ -8,7 +8,7 @@ class_name LootItem
 
 @export var stats: Dictionary = {}
 
-@export var perks: Array[Dictionary] = []
+@export var perks: Array[Perk] = []
 
 func get_stat_lines() -> Array[String]:
 	var lines: Array[String] = []
@@ -27,6 +27,6 @@ func get_perk_lines() -> Array[String]:
 	var lines: Array[String] = []
 	
 	for perk in perks:
-		lines.append("[b]%s[/b]" % perk.name)
+		lines.append("[b]%s[/b]" % perk.perk_name)
 	
 	return lines

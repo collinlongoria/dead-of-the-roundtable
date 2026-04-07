@@ -19,7 +19,7 @@ signal health_changed(new_health: float, max_health: float)
 @export var equipped_helmet: LootItem
 @export var equipped_chest: LootItem
 
-var active_perks: Array[String] = []
+var active_perks: Array[Perk] = []
 
 # Params
 @export_group("Base Speeds")
@@ -263,7 +263,6 @@ func _enter_state(s: State, input_dir: Vector2) -> void:
 		State.IDLE:
 			current_speed = 0.0
 
-
 func _exit_state(s: State) -> void:
 	match s:
 		State.SLIDE:
@@ -284,7 +283,6 @@ func _process_state(delta: float, input_dir: Vector2) -> void:
 			current_speed = move_toward(current_speed, target, sprint_acceleration * delta)
 			_move_directed(delta, input_dir, current_speed)
 
-
 func _move_directed(delta: float, input_dir: Vector2, speed: float) -> void:
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
@@ -294,12 +292,10 @@ func _move_directed(delta: float, input_dir: Vector2, speed: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, sprint_speed)
 		velocity.z = move_toward(velocity.z, 0, sprint_speed)
 
-
 func _move_slide(delta: float) -> void:
 	current_slide_speed = move_toward(current_slide_speed, 0.0, slide_friction * delta)
 	velocity.x = slide_direction.x * current_slide_speed
 	velocity.z = slide_direction.z * current_slide_speed
-
 
 func _target_speed_for(s: State) -> float:
 	match s:
@@ -383,7 +379,7 @@ func _cast_spell() -> void:
 	if is_crit:
 		final_damage *= stats.critical_damage_multiplier
 	
-	_server_spawn_spell.rpc_id(1, spell_spawn_point.global_position, target_point, velocity, spell_scene_path, final_damage, is_crit)
+	_server_spawn_spell.rpc_id(1, spell_spawn_point.global_position, target_point, velocity, spell_scene_path, final_damage, is_crit, self.get_path())
 	
 	# start cooldown timer
 	var final_fire_rate = equipped_spell.fire_rate / stats.attack_speed_multiplier
@@ -397,7 +393,7 @@ func take_damage(amount: float) -> void:
 	health_changed.emit(current_health, stats.health)
 
 @rpc("any_peer", "call_local", "reliable")
-func _server_spawn_spell(spawn_pos: Vector3, target_pos: Vector3, player_velocity: Vector3, scene_path: String, damage: float, is_crit: bool) -> void:
+func _server_spawn_spell(spawn_pos: Vector3, target_pos: Vector3, player_velocity: Vector3, scene_path: String, damage: float, is_crit: bool, attacker_path: NodePath) -> void:
 	if not multiplayer.is_server():
 		return
 	
@@ -424,6 +420,9 @@ func _server_spawn_spell(spawn_pos: Vector3, target_pos: Vector3, player_velocit
 		var forward_speed: float = max(0.0, player_velocity.dot(dir))
 		var inherited_speed := forward_speed * 0.5
 		projectile.velocity = dir * (projectile.speed + inherited_speed)
+	
+	if "attacker" in projectile:
+		projectile.attacker = get_node(attacker_path)
 
 func equip_item(new_item: LootItem) -> void:
 	if not is_multiplayer_authority() or not new_item:
@@ -456,18 +455,31 @@ func _apply_item_modifiers(item: LootItem, multiplier: float) -> void:
 		stats.apply_modifier(stat_enum, amount)
 
 func _toggle_item_perks(item: LootItem, is_equipped: bool) -> void:
-	for perk in item.perks:
-		var perk_key: String = perk.get("name", "Unknown")
-		if perk_key == "Unknown": continue
-		
+	for perk in item.perks: # 'perk' is now a Perk Resource
 		if is_equipped:
-			if not active_perks.has(perk_key):
-				active_perks.append(perk_key)
-				print("Perk Activated: ", perk_key)
+			if not active_perks.has(perk):
+				active_perks.append(perk)
+				print("Perk Activated: ", perk.perk_name, " -> ", perk.perk_desc)
+				
+				# Fire an initialization method if the perk needs it
+				if perk.has_method("on_equip"):
+					perk.on_equip(self)
 		else:
-			if active_perks.has(perk_key):
-				active_perks.erase(perk_key)
-				print("Perk Deactivated: ", perk_key)
+			if active_perks.has(perk):
+				# Fire a cleanup method if the perk needs it
+				if perk.has_method("on_unequip"):
+					perk.on_unequip(self)
+					
+				active_perks.erase(perk)
+				print("Perk Deactivated: ", perk.perk_name)
 
 func has_perk(perk_name: String) -> bool:
-	return active_perks.has(perk_name)
+	for p in active_perks:
+		if p.perk_name == perk_name:
+			return true
+	return false
+
+func process_hit_perks(context: HitContext) -> void:
+	for perk in active_perks:
+		if perk.has_method("modify_hit"):
+			perk.modify_hit(context)

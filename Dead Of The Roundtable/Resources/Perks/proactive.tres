@@ -1,0 +1,8 @@
+[gd_resource type="Resource" format=3 uid="uid://bcda6gi32plai"]
+
+[ext_resource type="Script" uid="uid://dphr7wmp4jg3p" path="res://Scripts/Perks/proactive.gd" id="1_mpsek"]
+
+[resource]
+script = ExtResource("1_mpsek")
+perk_name = "Proactive"
+metadata/_custom_type_script = "uid://ow1orejfpstp"

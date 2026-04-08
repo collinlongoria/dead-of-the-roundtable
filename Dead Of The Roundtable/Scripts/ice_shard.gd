@@ -37,8 +37,10 @@ func _on_body_entered(body: Node3D) -> void:
 			if attacker and attacker.has_method("process_kill_perks"):
 				attacker.process_kill_perks(context)
 		
-		# Tell all clients to show the damage number
-		spawn_damage_number.rpc(global_position, context.final_damage, context.is_critical)
+		# Tell ONLY the attacking client to show the damage number
+		if attacker:
+			var attacker_peer_id = attacker.get_multiplayer_authority()
+			spawn_damage_number.rpc_id(attacker_peer_id, global_position, context.final_damage, context.is_critical)
 	
 	queue_free()
 

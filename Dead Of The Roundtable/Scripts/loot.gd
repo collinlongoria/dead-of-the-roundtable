@@ -32,7 +32,21 @@ func _ready() -> void:
 		_refresh_card()
 	
 	# can put this somewhere else later
-	_roll_loot()
+	if multiplayer.is_server():
+		if not item_data:
+			_roll_loot()
+		if multiplayer.multiplayer_peer and multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
+			_sync_item_data.rpc(item_data.to_dict())
+	else:
+		# we are a client. Is the network fully connected yet?
+		if multiplayer.multiplayer_peer and multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
+			_request_item_data.rpc_id(1)
+		else:
+			# If we are still handshaking, wait for the signal
+			multiplayer.connected_to_server.connect(_on_network_ready, Object.CONNECT_ONE_SHOT)
+
+func _on_network_ready() -> void:
+	_request_item_data.rpc_id(1)
 
 func _roll_loot() -> void:
 	var rarity_roll: int = round(randf_range(1,100))
@@ -123,7 +137,7 @@ func _process(_delta: float) -> void:
 			active_card.global_position = Vector2(clamped_x, clamped_y)
 
 func interact(player: CharacterBody3D) -> void:
-	if not item_data: 
+	if not multiplayer.is_server() or not item_data: 
 		return
 
 	var old_item: LootItem = null
@@ -132,12 +146,47 @@ func interact(player: CharacterBody3D) -> void:
 			old_item = player.equipped_helmet
 		"chest":
 			old_item = player.equipped_chest
+		"gauntlets:":
+			old_item = player.equipped_gauntlets
+		"boots":
+			old_item = player.equipped_boots
+		"amulet":
+			old_item = player.equipped_amulet
+		"ring":
+			old_item = player.equipped_ring
 
-	player.equip_item(item_data)
+	player._client_equip_item.rpc(item_data.to_dict())
 
 	if old_item:
 		item_data = old_item
-		_refresh_card()
+		_sync_item_data.rpc(item_data.to_dict())
 	else:
 		unfocus() 
-		queue_free()
+		_client_remove_loot.rpc()
+
+@rpc("call_local", "reliable")
+func _update_client_cards():
+	_refresh_card()
+
+@rpc("any_peer", "call_remote", "reliable")
+func _request_item_data() -> void:
+	# Only the server should process this request
+	if not multiplayer.is_server() or not item_data:
+		return
+		
+	var sender_id = multiplayer.get_remote_sender_id()
+	
+	# Server whispers the data back to ONLY the client who asked
+	_sync_item_data.rpc_id(sender_id, item_data.to_dict())
+	
+@rpc("call_local", "reliable")
+func _sync_item_data(dict_data: Dictionary) -> void:
+	if not item_data:
+		item_data = LootItem.new()
+	item_data.load_from_dict(dict_data)
+	_refresh_card()
+
+@rpc("call_local", "reliable")
+func _client_remove_loot() -> void:
+	unfocus()
+	queue_free()

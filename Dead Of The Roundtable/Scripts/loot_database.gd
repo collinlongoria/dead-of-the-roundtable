@@ -139,9 +139,16 @@ func generate_loot(type_key: String, rarity_key: String) -> LootItem:
 
 				if ResourceLoader.exists(resource_path):
 					var executable_perk = load(resource_path)
-					executable_perk.perk_name = perk_json_data.get("name", "Unknown")
-					executable_perk.perk_desc = perk_json_data.get("description", "Unknown")
-					new_item.perks.append(executable_perk)
+						
+					# Duplicate first, then modify the duplicate!
+					var duplicated = executable_perk.duplicate(true)
+					duplicated.perk_name = perk_json_data.get("name", "Unknown")
+					duplicated.perk_desc = perk_json_data.get("description", "Unknown")
+					
+					# Stamp the path into the resource's metadata
+					duplicated.set_meta("original_path", resource_path)
+					
+					new_item.perks.append(duplicated)
 				else:
 					push_error("Loot Database generated a ring perk but missing logic resource at: " + resource_path)
 		else:
@@ -160,14 +167,17 @@ func generate_loot(type_key: String, rarity_key: String) -> LootItem:
 				var resource_path: String = "res://Resources/Perks/" + perk_key + ".tres"
 
 				if ResourceLoader.exists(resource_path):
-					# Load the actual logic Resource
 					var executable_perk = load(resource_path)
-
-					executable_perk.perk_name = perk_json_data.get("name", "Unknown")
-					executable_perk.perk_desc = perk_json_data.get("description", "Unknown")
-
-					# Append the resource
-					new_item.perks.append(executable_perk.duplicate(true))
+						
+					# Duplicate first, then modify the duplicate!
+					var duplicated = executable_perk.duplicate(true)
+					duplicated.perk_name = perk_json_data.get("name", "Unknown")
+					duplicated.perk_desc = perk_json_data.get("description", "Unknown")
+					
+					# Stamp the path into the resource's metadata
+					duplicated.set_meta("original_path", resource_path)
+					
+					new_item.perks.append(duplicated)
 				else:
 					push_error("Loot Database generated a perk but missing logic resource at: " + resource_path)
 	

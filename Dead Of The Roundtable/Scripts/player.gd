@@ -90,6 +90,9 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	var quad_material: ShaderMaterial = post_process_quad.get_active_material(0)
 	if quad_material:
+		quad_material = quad_material.duplicate()
+		post_process_quad.set_surface_override_material(0, quad_material)
+		
 		quad_material.set_shader_parameter("proxy_depth_tex", sub_viewport_depth.get_texture())
 		quad_material.set_shader_parameter("proxy_color_tex", sub_viewport_color.get_texture())
 	
@@ -105,6 +108,9 @@ func _ready() -> void:
 			health_changed.emit(current_health, stats.health)
 		else:
 			push_warning("Player spawned, but no HUD found in scene!")
+	else:
+		sub_viewport_depth.render_target_update_mode = SubViewport.UPDATE_DISABLED
+		sub_viewport_color.render_target_update_mode = SubViewport.UPDATE_DISABLED
 		
 	if camera:
 		camera.current = is_multiplayer_authority()
@@ -234,12 +240,21 @@ func _handle_interaction() -> void:
 			current_target.focus(self)
 			
 		if Input.is_action_just_pressed("interact"):
-			current_target.interact(self)
+			_server_interact_with_loot.rpc_id(1, current_target.get_path())
 			
 	elif current_target:
 		if current_target.has_method("unfocus"):
 			current_target.unfocus()
 		current_target = null
+
+@rpc("any_peer", "call_local", "reliable")
+func _server_interact_with_loot(loot_path: NodePath) -> void:
+	if not multiplayer.is_server():
+		return
+	
+	var target_loot = get_node_or_null(loot_path)
+	if target_loot and target_loot is LootDrop:
+		target_loot.interact(self)
 
 func _determine_state(input_dir: Vector2, on_floor: bool) -> State:
 	if state == State.SLIDE:
@@ -396,9 +411,10 @@ func _cast_spell() -> void:
 	timer.timeout.connect(func(): can_fire = true)
 	
 	# perks
-	for perk in active_perks:
-		if perk.has_method("on_cast"):
-			perk.on_cast(self)
+	if not multiplayer.is_server():
+		for perk in active_perks:
+			if perk.has_method("on_cast"):
+				perk.on_cast(self)
 
 func take_damage(amount: float, attacker: Node3D = null) -> void:
 	var context := HitContext.new()
@@ -446,9 +462,13 @@ func _server_spawn_spell(spawn_pos: Vector3, target_pos: Vector3, player_velocit
 	
 	if "attacker" in projectile:
 		projectile.attacker = get_node(attacker_path)
+	
+	for perk in active_perks:
+		if perk.has_method("on_cast"):
+			perk.on_cast(self)
 
 func equip_item(new_item: LootItem) -> void:
-	if not is_multiplayer_authority() or not new_item:
+	if not new_item:
 		return
 		
 	match new_item.item_type:
@@ -509,3 +529,16 @@ func process_hit_perks(context: HitContext) -> void:
 	for perk in active_perks:
 		if perk.has_method("modify_hit"):
 			perk.modify_hit(context)
+
+@rpc("any_peer", "call_local", "reliable")
+func _client_equip_item(item_dict: Dictionary) -> void:
+	# Security check
+	var sender_id = multiplayer.get_remote_sender_id()
+	if sender_id != 1 and sender_id != 0:
+		push_warning("Client tried to force an equip!") # should handle this later
+		return
+		
+	var new_item := LootItem.new()
+	new_item.load_from_dict(item_dict)
+	
+	equip_item(new_item)

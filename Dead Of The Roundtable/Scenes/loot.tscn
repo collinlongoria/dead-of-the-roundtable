@@ -17,7 +17,9 @@ texture_filter = 2
 material = SubResource("StandardMaterial3D_50uj4")
 
 [node name="Loot" type="RigidBody3D" unique_id=1726042924]
+disable_mode = 1
 collision_layer = 3
+sleeping = true
 script = ExtResource("1_dvcho")
 depth_proxy_shader = ExtResource("2_dvcho")
 color_proxy_shader = ExtResource("3_lk60n")

@@ -2,9 +2,11 @@
 
 [ext_resource type="Script" uid="uid://dftsnc7yuv6jn" path="res://Scripts/hud.gd" id="1_6fbih"]
 [ext_resource type="Texture2D" uid="uid://crshtyp8ewpsp" path="res://Assets/Sprites/bad_hand.png" id="1_e0onf"]
+[ext_resource type="FontFile" uid="uid://bwmgr6kbypg4c" path="res://Assets/Fonts/Ravenswood Clocktower.otf" id="3_6fbih"]
 [ext_resource type="PackedScene" uid="uid://cj0qa6mtcm1m4" path="res://Scenes/profile_hud.tscn" id="3_bjfho"]
+[ext_resource type="PackedScene" uid="uid://dalxolbc2e3vv" path="res://Scenes/coop_profile_hud.tscn" id="3_t1xeu"]
 
-[node name="Hud" type="Control" unique_id=1583769511]
+[node name="Hud" type="Control" unique_id=1583769511 groups=["hud"]]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,6 +15,69 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_6fbih")
+
+[node name="Margin" type="MarginContainer" parent="." unique_id=1118997069]
+custom_minimum_size = Vector2(41.005, 27.485)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="Control" type="Control" parent="Margin" unique_id=1211674155]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Margin/Control" unique_id=2061266930]
+texture_filter = 6
+layout_mode = 0
+offset_right = 1856.0
+offset_bottom = 102.0
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.733002, 2.7554854e-06, 6.738305e-07, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.7647059)
+theme_override_constants/shadow_outline_size = 10
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 5
+theme_override_fonts/normal_font = ExtResource("3_6fbih")
+theme_override_font_sizes/normal_font_size = 96
+text = "1"
+fit_content = true
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Margin/Control" unique_id=629029546]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="CoopProfileHud" parent="Margin/Control/VBoxContainer" unique_id=1899367514 instance=ExtResource("3_t1xeu")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CoopProfileHud2" parent="Margin/Control/VBoxContainer" unique_id=1645612627 instance=ExtResource("3_t1xeu")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CoopProfileHud3" parent="Margin/Control/VBoxContainer" unique_id=1043513909 instance=ExtResource("3_t1xeu")]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+
+[node name="ProfileHud" parent="Margin/Control/VBoxContainer" unique_id=1977542371 instance=ExtResource("3_bjfho")]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 1
 
 [node name="HandTexture" type="TextureRect" parent="." unique_id=1625981799]
 layout_mode = 1
@@ -26,16 +91,6 @@ offset_top = -480.0
 grow_horizontal = 0
 grow_vertical = 0
 texture = ExtResource("1_e0onf")
-
-[node name="ProfileHud" parent="." unique_id=1977542371 instance=ExtResource("3_bjfho")]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-grow_vertical = 0
-scale = Vector2(1.4, 1.4)
-size_flags_horizontal = 0
-size_flags_vertical = 3
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=1081223817]
 layout_mode = 1

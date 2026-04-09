@@ -98,20 +98,18 @@ func _ready() -> void:
 	
 	if is_multiplayer_authority():
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-		
 		current_health = stats.health
-		
-		# HUD connection
-		var hud = get_tree().get_first_node_in_group("hud")
-		if hud:
-			health_changed.connect(hud._on_player_health_changed)
-			health_changed.emit(current_health, stats.health)
-		else:
-			push_warning("Player spawned, but no HUD found in scene!")
 	else:
+		current_health = stats.health
 		sub_viewport_depth.render_target_update_mode = SubViewport.UPDATE_DISABLED
 		sub_viewport_color.render_target_update_mode = SubViewport.UPDATE_DISABLED
 		
+	var hud = get_tree().get_first_node_in_group("hud")
+	if hud and hud.has_method("register_player"):
+		hud.register_player(self)
+	else:
+		push_warning("player spawned, no HUD found.")
+	
 	if camera:
 		camera.current = is_multiplayer_authority()
 		original_camera_y = camera.position.y
@@ -435,7 +433,7 @@ func take_damage(amount: float, attacker: Node3D = null) -> void:
 func _server_spawn_spell(spawn_pos: Vector3, target_pos: Vector3, player_velocity: Vector3, scene_path: String, damage: float, is_crit: bool, attacker_path: NodePath) -> void:
 	if not multiplayer.is_server():
 		return
-	
+
 	var scene := load(scene_path) as PackedScene
 	if not scene:
 		push_error("Failed to load spell scene: ", scene_path)
@@ -444,25 +442,18 @@ func _server_spawn_spell(spawn_pos: Vector3, target_pos: Vector3, player_velocit
 	var projectile = scene.instantiate()
 	get_parent().add_child(projectile, true)
 	projectile.global_position = spawn_pos
-	
+
 	var dir := (target_pos - spawn_pos).normalized()
-	
 	if dir.length_squared() > 0.0001:
 		projectile.look_at(target_pos, Vector3.UP)
-	
-	if "damage" in projectile:
-		projectile.damage = damage
-	if "is_critical" in projectile:
-		projectile.is_critical = is_crit
-	
-	if "velocity" in projectile and "speed" in projectile:
+
+	if projectile is BaseProjectile:
 		var forward_speed: float = max(0.0, player_velocity.dot(dir))
 		var inherited_speed := forward_speed * 0.5
-		projectile.velocity = dir * (projectile.speed + inherited_speed)
-	
-	if "attacker" in projectile:
-		projectile.attacker = get_node(attacker_path)
-	
+		var current_attacker = get_node(attacker_path)
+
+		projectile.setup(current_attacker, damage, is_crit, dir, inherited_speed)
+
 	for perk in active_perks:
 		if perk.has_method("on_cast"):
 			perk.on_cast(self)
@@ -542,3 +533,8 @@ func _client_equip_item(item_dict: Dictionary) -> void:
 	new_item.load_from_dict(item_dict)
 	
 	equip_item(new_item)
+
+func _exit_tree() -> void:
+	var hud = get_tree().get_first_node_in_group("hud")
+	if hud and hud.has_method("unregister_player"):
+		hud.unregister_player(self)

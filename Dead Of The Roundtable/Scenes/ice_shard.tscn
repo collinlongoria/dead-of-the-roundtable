@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cq85x6ryq1343"]
 
 [ext_resource type="Texture2D" uid="uid://dmxarcc15yice" path="res://Assets/Sprites/bad_snowflake.png" id="1_23qfy"]
-[ext_resource type="Script" uid="uid://d4e2max3tqllx" path="res://Scripts/ice_shard.gd" id="1_w5rp8"]
+[ext_resource type="Script" uid="uid://d4e2max3tqllx" path="res://Scripts/Spells/ice_shard.gd" id="1_w5rp8"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_w5rp8"]
 

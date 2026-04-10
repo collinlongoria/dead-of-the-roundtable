@@ -89,11 +89,17 @@ signal stat_changed(stat: Stat, new_value: float)
 		elemental_damage_multiplier = value
 		stat_changed.emit(Stat.ELEMENTAL_DAMAGE_MULTIPLIER, elemental_damage_multiplier)
 
+@export var overshield: float = 0.0:
+	set(value):
+		overshield = value
+		stat_changed.emit(Stat.OVERSHIELD, overshield)
+
 func apply_modifier(stat: Stat, amount: float) -> void:
 	match stat:
 		Stat.HEALTH: health += amount
 		Stat.HEALTH_REGEN: health_regen += amount
 		Stat.THORNS: thorns += amount
+		Stat.OVERSHIELD: overshield += amount
 		
 		Stat.MOVEMENT_SPEED: movement_speed += amount
 		Stat.DAMAGE_MULTIPLIER: damage_multiplier += amount

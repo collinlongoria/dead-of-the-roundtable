@@ -35,7 +35,7 @@ func register_player(player: CharacterBody3D) -> void:
 		assigned_players[player] = target_profile
 		player.health_changed.connect(target_wrapper._on_player_health_changed)
 		
-		player.health_changed.emit(player.current_health, player.stats.health)
+		player.health_changed.emit(player.current_health, player.stats.health, player.current_overshield, player.stats.overshield)
 
 func unregister_player(player: CharacterBody3D) -> void:
 	if assigned_players.has(player):

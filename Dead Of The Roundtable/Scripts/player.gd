@@ -14,6 +14,9 @@ signal health_changed(new_health: float, max_health: float)
 @onready var outline_camera_depth: Camera3D = $OutlineDepthViewport/OutlineDepthCamera
 @onready var outline_camera_color: Camera3D = $OutlineColorViewport/OutlineColorCamera
 
+@export_group("Regen Settings")
+@export var regen_delay: float = 4.0
+
 # Loot
 @export_group("Equipment")
 @export var equipped_helmet: LootItem
@@ -69,6 +72,8 @@ var slide_just_ended: bool = false
 var bob_time: float = 0.0
 var can_fire: bool = true
 var current_health: float
+var current_overshield: float = 0.0
+var damage_cooldown: float = 0.0
 var current_target: Node3D = null # what is currently being looked at
 
 # movement vars
@@ -99,8 +104,10 @@ func _ready() -> void:
 	if is_multiplayer_authority():
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		current_health = stats.health
+		current_overshield = stats.overshield
 	else:
 		current_health = stats.health
+		current_overshield = stats.overshield
 		sub_viewport_depth.render_target_update_mode = SubViewport.UPDATE_DISABLED
 		sub_viewport_color.render_target_update_mode = SubViewport.UPDATE_DISABLED
 		
@@ -144,6 +151,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		rotate_y(-event.relative.x * mouse_sensitivity)
 		camera.rotate_x(-event.relative.y * mouse_sensitivity)
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-85), deg_to_rad(85))
+	
+	# --- DEVELOPER CHEATS ---
+	# Press F8 to instantly max out the overshield
+	if event is InputEventKey and event.pressed and event.keycode == KEY_F5:
+		if stats.overshield > 0:
+			current_overshield = stats.overshield
+			health_changed.emit(current_health, stats.health, current_overshield, stats.overshield)
+			print("CHEAT CODE ACTIVATED: Max Overshield!")
+		else:
+			print("CHEAT FAILED: You don't have any max overshield capacity equipped!")
 
 
 func _physics_process(delta: float) -> void:
@@ -204,6 +221,21 @@ func _physics_process(delta: float) -> void:
 
 func _process(delta: float) -> void:
 	_sync_outline_cameras()
+	
+	if is_multiplayer_authority():
+		# Handle the damage cooldown timer
+		if damage_cooldown > 0.0:
+			print(damage_cooldown)
+			damage_cooldown -= delta
+		elif current_health != stats.health:
+			# Cooldown is 0, apply health regen from PlayerStats
+			if current_health < stats.health and stats.health_regen > 0:
+				print("Eh doc")
+				current_health += stats.health_regen * delta
+				current_health = min(current_health, stats.health)
+				
+				# Continually update the HUD while regenerating
+				health_changed.emit(current_health, stats.health, current_overshield, stats.overshield)
 
 func _resize_outline_viewports() -> void:
 	var s: Vector2i = get_viewport().size
@@ -425,9 +457,19 @@ func take_damage(amount: float, attacker: Node3D = null) -> void:
 		if perk.has_method("modify_incoming_hit"):
 			perk.modify_incoming_hit(context)
 			
-	current_health -= context.final_damage
+	# Reset the regen timer so it has to count down again
+	damage_cooldown = regen_delay
+	
+	# Apply damage to Overshield first
+	var damage_to_shield = min(context.final_damage, current_overshield)
+	current_overshield -= damage_to_shield
+	
+	# Pass remaining damage to health
+	var remaining_damage = context.final_damage - damage_to_shield
+	current_health -= remaining_damage
 	current_health = clamp(current_health, 0.0, stats.health)
-	health_changed.emit(current_health, stats.health)
+	
+	health_changed.emit(current_health, stats.health, current_overshield, stats.overshield)
 
 @rpc("any_peer", "call_local", "reliable")
 func _server_spawn_spell(spawn_pos: Vector3, target_pos: Vector3, player_velocity: Vector3, scene_path: String, damage: float, is_crit: bool, attacker_path: NodePath) -> void:
@@ -491,6 +533,13 @@ func _apply_item_modifiers(item: LootItem, multiplier: float) -> void:
 		var amount: float = item.stats[stat_enum] * multiplier
 		stats.apply_modifier(stat_enum, amount)
 
+	# Clamp current values so unequipping an item instantly lowers the current pool if it exceeds the new max
+	current_health = clamp(current_health, 0.0, stats.health)
+	current_overshield = clamp(current_overshield, 0.0, stats.overshield)
+	
+	# Emit the signal so the HUD visually updates the max capacities instantly
+	health_changed.emit(current_health, stats.health, current_overshield, stats.overshield)
+
 func _toggle_item_perks(item: LootItem, is_equipped: bool) -> void:
 	for perk in item.perks: # 'perk' is now a Perk Resource
 		if is_equipped:
@@ -538,3 +587,12 @@ func _exit_tree() -> void:
 	var hud = get_tree().get_first_node_in_group("hud")
 	if hud and hud.has_method("unregister_player"):
 		hud.unregister_player(self)
+
+func trigger_kill_effects() -> void:
+	# Only grant the shield if the damage timer is zero AND the player has max overshield capacity
+	if damage_cooldown <= 0.0 and stats.overshield > 0.0:
+		# Restore 20% of max overshield per kill
+		var restore_amount = stats.overshield / 5.0 
+		current_overshield = min(current_overshield + restore_amount, stats.overshield)
+		
+		health_changed.emit(current_health, stats.health, current_overshield, stats.overshield)

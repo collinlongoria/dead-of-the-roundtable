@@ -17,6 +17,17 @@ bg_color = Color(1, 1, 1, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7djp"]
 bg_color = Color(0.65891117, 1.9131974e-06, 5.2943824e-07, 1)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tsvmt"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mv1l4"]
+bg_color = Color(0, 0.75686276, 0.75686276, 0.20784314)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(2.117753e-06, 0.9088364, 0.90883666, 1)
+border_blend = true
+
 [node name="ProfileHud" type="PanelContainer" unique_id=525954389]
 offset_right = 264.0
 offset_bottom = 60.0
@@ -73,6 +84,13 @@ size_flags_vertical = 4
 theme_override_styles/background = SubResource("StyleBoxEmpty_07m03")
 theme_override_styles/fill = SubResource("StyleBoxFlat_a7djp")
 rounded = true
+show_percentage = false
+
+[node name="OvershieldBar" type="ProgressBar" parent="HBoxContainer/VBoxContainer/HealthWrapper" unique_id=2115942644]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/background = SubResource("StyleBoxEmpty_tsvmt")
+theme_override_styles/fill = SubResource("StyleBoxFlat_mv1l4")
 show_percentage = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HealthWrapper" unique_id=1606063425]

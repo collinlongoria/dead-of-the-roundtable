@@ -1,10 +1,28 @@
 [gd_scene format=3 uid="uid://p45tsv8wlq4o"]
 
+[ext_resource type="PackedScene" uid="uid://2d84vjeeqt4y" path="res://Scenes/player_spawner.tscn" id="1_8hgej"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8hgej"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_ir4d6"]
+sky_material = SubResource("ProceduralSkyMaterial_8hgej")
+
+[sub_resource type="Environment" id="Environment_ievnd"]
+background_mode = 2
+sky = SubResource("Sky_ir4d6")
+tonemap_mode = 2
+glow_enabled = true
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_n5c77"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_8hgej"]
 
 [node name="Level0" type="Node3D" unique_id=936529965]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1443094989]
+environment = SubResource("Environment_ievnd")
 
 [node name="Node3D" type="Node3D" parent="." unique_id=1720449994]
 transform = Transform3D(24.710218, 0, 0, 0, 1, 0, 0, 0, 27.613094, 0, 0, 0)
@@ -16,3 +34,6 @@ shape = SubResource("BoxShape3D_n5c77")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D/StaticBody3D" unique_id=1388424797]
 mesh = SubResource("BoxMesh_8hgej")
+
+[node name="PlayerSpawner" parent="." unique_id=707410333 instance=ExtResource("1_8hgej")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.90622294, 1.0300627, -4.74259)

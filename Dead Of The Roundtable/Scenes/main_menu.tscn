@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dko2m525rvcni"]
 
 [ext_resource type="Script" uid="uid://da3fo1ji8b70u" path="res://Scripts/game_manager.gd" id="1_28flt"]
-[ext_resource type="PackedScene" uid="uid://baq30e1tuh1cb" path="res://Scenes/stats_test.tscn" id="2_n45e2"]
+[ext_resource type="PackedScene" uid="uid://p45tsv8wlq4o" path="res://Scenes/level0.tscn" id="2_opfnp"]
 [ext_resource type="PackedScene" uid="uid://dtwheaff3qch7" path="res://Scenes/player.tscn" id="3_ce3w2"]
 [ext_resource type="FontFile" uid="uid://bwmgr6kbypg4c" path="res://Assets/Fonts/Ravenswood Clocktower.otf" id="4_ce3w2"]
 [ext_resource type="FontFile" uid="uid://dxwtbcclixi84" path="res://Assets/Fonts/Bathrind.otf" id="5_n45e2"]
@@ -9,7 +9,7 @@
 
 [node name="GameManager" type="Node" unique_id=1831519109]
 script = ExtResource("1_28flt")
-world_scene = ExtResource("2_n45e2")
+world_scene = ExtResource("2_opfnp")
 player_scene = ExtResource("3_ce3w2")
 
 [node name="UI" type="Control" parent="." unique_id=1119740222]

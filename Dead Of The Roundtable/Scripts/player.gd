@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-signal health_changed(new_health: float, max_health: float)
+signal health_changed(new_health: float, max_health: float, new_overshield: float, max_overshield: float)
 
 # Refs
 @onready var camera: Camera3D = $PlayerCamera
@@ -227,10 +227,9 @@ func _process(delta: float) -> void:
 		if damage_cooldown > 0.0:
 			print(damage_cooldown)
 			damage_cooldown -= delta
-		elif current_health != stats.health:
+		else:
 			# Cooldown is 0, apply health regen from PlayerStats
 			if current_health < stats.health and stats.health_regen > 0:
-				print("Eh doc")
 				current_health += stats.health_regen * delta
 				current_health = min(current_health, stats.health)
 				

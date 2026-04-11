@@ -113,3 +113,14 @@ func apply_modifier(stat: Stat, amount: float) -> void:
 		
 		Stat.ELEMENTAL_CHANCE_MULTIPLIER: elemental_chance_multiplier += amount
 		Stat.ELEMENTAL_DAMAGE_MULTIPLIER: elemental_damage_multiplier += amount
+
+static func is_flat_stat(stat: Stat) -> bool:
+	var flat_stats: Array[Stat] = [
+		Stat.HEALTH,
+		Stat.HEALTH_REGEN,
+		Stat.THORNS,
+		Stat.OVERSHIELD,
+		Stat.MAXIMUM_MANA,
+		Stat.MAXIMUM_STORED_MANA
+	]
+	return stat in flat_stats

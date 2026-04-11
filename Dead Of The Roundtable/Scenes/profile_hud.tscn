@@ -1,10 +1,14 @@
 [gd_scene format=3 uid="uid://cj0qa6mtcm1m4"]
 
 [ext_resource type="Texture2D" uid="uid://dvyc0hw8i5rog" path="res://icon.svg" id="1_mv1l4"]
+[ext_resource type="Texture2D" uid="uid://br7xcfjxtfo03" path="res://Assets/Sprites/Lava.png" id="2_q7drg"]
 [ext_resource type="Script" uid="uid://chkpgk47837un" path="res://Scripts/health_wrapper.gd" id="2_tsvmt"]
 [ext_resource type="FontFile" uid="uid://dxwtbcclixi84" path="res://Assets/Fonts/Bathrind.otf" id="3_q7drg"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mv1l4"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_32wjl"]
+texture = ExtResource("2_q7drg")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_32wjl"]
 bg_color = Color(0.099985994, 0.09998601, 0.099985965, 1)
@@ -60,15 +64,31 @@ grow_vertical = 2
 texture = ExtResource("1_mv1l4")
 expand_mode = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1557362186]
+[node name="Control" type="Control" parent="HBoxContainer" unique_id=318715339]
 layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="TextureRect" type="Panel" parent="HBoxContainer/Control" unique_id=181414223]
+custom_minimum_size = Vector2(220, 60)
+layout_mode = 0
+offset_left = -4.0
+offset_right = 216.0
+offset_bottom = 60.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_32wjl")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Control" unique_id=1557362186]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 7.0
+offset_right = 204.0
+offset_bottom = 53.0
 size_flags_vertical = 4
 
-[node name="HealthWrapper" type="MarginContainer" parent="HBoxContainer/VBoxContainer" unique_id=1729818932 groups=["hud"]]
+[node name="HealthWrapper" type="MarginContainer" parent="HBoxContainer/Control/VBoxContainer" unique_id=1729818932 groups=["hud"]]
 layout_mode = 2
 script = ExtResource("2_tsvmt")
 
-[node name="CatchupBar" type="ProgressBar" parent="HBoxContainer/VBoxContainer/HealthWrapper" unique_id=1586251354]
+[node name="CatchupBar" type="ProgressBar" parent="HBoxContainer/Control/VBoxContainer/HealthWrapper" unique_id=1586251354]
 custom_minimum_size = Vector2(200, 25)
 layout_mode = 2
 size_flags_vertical = 1
@@ -77,7 +97,7 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_6wbl4")
 rounded = true
 show_percentage = false
 
-[node name="HealthBar" type="ProgressBar" parent="HBoxContainer/VBoxContainer/HealthWrapper" unique_id=311013495]
+[node name="HealthBar" type="ProgressBar" parent="HBoxContainer/Control/VBoxContainer/HealthWrapper" unique_id=311013495]
 custom_minimum_size = Vector2(200, 25)
 layout_mode = 2
 size_flags_vertical = 4
@@ -86,28 +106,31 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_a7djp")
 rounded = true
 show_percentage = false
 
-[node name="OvershieldBar" type="ProgressBar" parent="HBoxContainer/VBoxContainer/HealthWrapper" unique_id=2115942644]
+[node name="OvershieldBar" type="ProgressBar" parent="HBoxContainer/Control/VBoxContainer/HealthWrapper" unique_id=2115942644]
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_styles/background = SubResource("StyleBoxEmpty_tsvmt")
 theme_override_styles/fill = SubResource("StyleBoxFlat_mv1l4")
 show_percentage = false
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HealthWrapper" unique_id=1606063425]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/Control/VBoxContainer/HealthWrapper" unique_id=1606063425]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/HealthWrapper/HBoxContainer" unique_id=1551675664]
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/Control/VBoxContainer/HealthWrapper/HBoxContainer" unique_id=1551675664]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="HealthLabel" type="Label" parent="HBoxContainer/VBoxContainer/HealthWrapper/HBoxContainer" unique_id=1428020914]
+[node name="HealthLabel" type="RichTextLabel" parent="HBoxContainer/Control/VBoxContainer/HealthWrapper/HBoxContainer" unique_id=113908661]
 layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("3_q7drg")
-theme_override_font_sizes/font_size = 12
+theme_override_fonts/normal_font = ExtResource("3_q7drg")
+bbcode_enabled = true
 text = "100 HP"
+fit_content = true
+autowrap_mode = 0
+vertical_alignment = 1
 
-[node name="MoneyLabel" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=1074740960]
+[node name="MoneyLabel" type="Label" parent="HBoxContainer/Control/VBoxContainer" unique_id=1074740960]
 layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_q7drg")

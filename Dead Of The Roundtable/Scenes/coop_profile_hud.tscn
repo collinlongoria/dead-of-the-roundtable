@@ -106,12 +106,13 @@ size_flags_horizontal = 0
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="HealthLabel" type="Label" parent="HBoxContainer/VBoxContainer/HealthWrapper/HBoxContainer" unique_id=325383048]
+[node name="HealthLabel" type="RichTextLabel" parent="HBoxContainer/VBoxContainer/HealthWrapper/HBoxContainer" unique_id=809139089]
 layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("3_tia3u")
-theme_override_font_sizes/font_size = 12
 text = "100 HP"
+fit_content = true
+autowrap_mode = 0
+vertical_alignment = 1
 
 [node name="MoneyLabel" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=138886602]
 layout_mode = 2

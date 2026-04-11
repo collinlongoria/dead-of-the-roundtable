@@ -15,11 +15,13 @@ func get_stat_lines() -> Array[String]:
 	
 	for stat_enum in stats:
 		var amount: float = stats[stat_enum]
-		var percentage: int = roundi(amount * 100)
-		
 		var stat_string: String = PlayerStats.Stat.keys()[stat_enum].capitalize().replace("_", " ")
 		
-		lines.append("+%d%% %s" % [percentage, stat_string])
+		if PlayerStats.is_flat_stat(stat_enum):
+			lines.append("+%d %s" % [roundi(amount), stat_string])
+		else:
+			var percentage: int = roundi(amount * 100)
+			lines.append("+%d%% %s" % [percentage, stat_string])
 	
 	return lines
 	

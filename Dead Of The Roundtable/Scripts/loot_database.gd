@@ -117,9 +117,14 @@ func generate_loot(type_key: String, rarity_key: String) -> LootItem:
 			var roll := randi_range(1, 3)
 			var increase := 0.0
 			
-			if roll == 1: increase = 0.05
-			if roll == 2: increase = 0.10
-			if roll == 3: increase = 0.20
+			if PlayerStats.is_flat_stat(stat_enum):
+				if roll == 1: increase = 15.0
+				if roll == 2: increase = 30.0
+				if roll == 3: increase = 50.0
+			else:
+				if roll == 1: increase = 0.05
+				if roll == 2: increase = 0.10
+				if roll == 3: increase = 0.20
 			
 			new_item.stats[stat_enum] = increase
 	

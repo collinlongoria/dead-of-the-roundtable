@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="Perk" format=3 uid="uid://tgsqymrwbmyp"]
+[gd_resource type="Resource" format=3 uid="uid://tgsqymrwbmyp"]
 
-[ext_resource type="Script" uid="uid://ow1orejfpstp" path="res://Scripts/perk.gd" id="1_jggw5"]
+[ext_resource type="Script" uid="uid://dqhyxxuchocb1" path="res://Scripts/Perks/focused.gd" id="1_jggw5"]
 
 [resource]
 script = ExtResource("1_jggw5")

@@ -42,7 +42,9 @@ var active_perks: Array[Perk] = []
 @export var sprint_acceleration: float = 20.0 # sprint accel to max
 
 # Spell Params
-@export_group("Stats")
+@export_group("Stats & Spells")
+@export var max_spells: int = 1
+@export var spread_multiplier: float = 1.0
 @export var equipped_spell: SpellData
 @export var stats: PlayerStats
 
@@ -400,7 +402,7 @@ func _cast_spell() -> void:
 	
 	# random point with inside a circle for bloom
 	var random_angle := randf() * TAU
-	var random_radius := randf() * spread_amount
+	var random_radius := randf() * (spread_amount * spread_multiplier)
 	var rand_x := cos(random_angle) * random_radius
 	var rand_y := sin(random_angle) * random_radius
 	
@@ -510,9 +512,18 @@ func equip_item(new_item: LootItem) -> void:
 		"chest":
 			_swap_gear(equipped_chest, new_item)
 			equipped_chest = new_item
+		"gauntlets":
+			_swap_gear(equipped_gauntlets, new_item)
+			equipped_gauntlets = new_item
+		"boots":
+			_swap_gear(equipped_boots, new_item)
+			equipped_boots = new_item
 		"amulet":
 			_swap_gear(equipped_amulet, new_item)
 			equipped_amulet = new_item
+		"ring":
+			_swap_gear(equipped_ring, new_item)
+			equipped_ring = new_item
 		_:
 			push_error("Player tried to equip unknown item type: ", new_item.item_type)
 

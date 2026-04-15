@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://p45tsv8wlq4o"]
 
 [ext_resource type="PackedScene" uid="uid://2d84vjeeqt4y" path="res://Scenes/player_spawner.tscn" id="1_8hgej"]
+[ext_resource type="PackedScene" uid="uid://com4bfxvbhe76" path="res://Scenes/zombie.tscn" id="1_ir4d6"]
+[ext_resource type="PackedScene" uid="uid://cbhn18ceowcmr" path="res://Scenes/loot.tscn" id="3_ievnd"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8hgej"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -15,9 +17,33 @@ sky = SubResource("Sky_ir4d6")
 tonemap_mode = 2
 glow_enabled = true
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_n5c77"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_ir4d6"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_8hgej"]
+[sub_resource type="BoxMesh" id="BoxMesh_ievnd"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2d57t"]
+albedo_color = Color(0.116214745, 0.326779, 0.10109133, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qcvyx"]
+albedo_color = Color(0.53333336, 0.53333336, 0.53333336, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x6kbu"]
+albedo_color = Color(0.5330367, 0.5330367, 0.5330367, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gdcnv"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pca0e"]
+albedo_color = Color(0.3010431, 0.23756713, 0.007351106, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y4o00"]
+albedo_color = Color(0.3328807, 0.33288068, 0.33288068, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v84nj"]
+albedo_color = Color(0.41518843, 0.29529157, 0.050519213, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uralf"]
+albedo_color = Color(0, 0.4392157, 0, 1)
 
 [node name="Level0" type="Node3D" unique_id=936529965]
 
@@ -27,13 +53,309 @@ environment = SubResource("Environment_ievnd")
 [node name="Node3D" type="Node3D" parent="." unique_id=1720449994]
 transform = Transform3D(24.710218, 0, 0, 0, 1, 0, 0, 0, 27.613094, 0, 0, 0)
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Node3D" unique_id=77202617]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/StaticBody3D" unique_id=1012614500]
-shape = SubResource("BoxShape3D_n5c77")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D/StaticBody3D" unique_id=1388424797]
-mesh = SubResource("BoxMesh_8hgej")
-
 [node name="PlayerSpawner" parent="." unique_id=707410333 instance=ExtResource("1_8hgej")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.90622294, 1.0300627, -4.74259)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.94689, 2.2888215, -0.91450214)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1950057898]
+transform = Transform3D(0.0058119, 0.7114256, -0.7027375, -4.6767354e-09, 0.70274925, 0.7114377, 0.9999831, -0.004134819, 0.004084319, 0, 25.154585, 0)
+light_energy = 1.5
+
+[node name="Zombie" parent="." unique_id=1561199060 instance=ExtResource("1_ir4d6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3344922, 2.9381275, -12.255905)
+
+[node name="Zombie2" parent="." unique_id=332882544 instance=ExtResource("1_ir4d6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.078819, 2.9381275, 12.613814)
+
+[node name="Zombie3" parent="." unique_id=1194706092 instance=ExtResource("1_ir4d6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.67466, 2.9381275, -3.8224096)
+
+[node name="Grove_Floor" type="Node3D" parent="." unique_id=62594674]
+transform = Transform3D(48.630627, 0, 0, 0, 1.2480378, 0, 0, 0, 46.95318, 0, 1.1077775, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_Floor" unique_id=904513251]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_Floor/StaticBody3D" unique_id=73378456]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_Floor/StaticBody3D" unique_id=297181843]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_2d57t")
+
+[node name="Grove_NorthWall" type="Node3D" parent="." unique_id=416517243]
+transform = Transform3D(4.6210675, 0, 0, 0, 3.9441462, 0, 0, 0, 17.244562, 13.130039, 3.5802765, 7.096157)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_NorthWall" unique_id=1923646328]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_NorthWall/StaticBody3D" unique_id=1535392560]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_NorthWall/StaticBody3D" unique_id=861903248]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_qcvyx")
+
+[node name="Grove_NorthWall2" type="Node3D" parent="." unique_id=1440170194]
+transform = Transform3D(4.6210675, 0, 0, 0, 3.9441462, 0, 0, 0, 10.7326, 13.130039, 3.5802765, -11.604515)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_NorthWall2" unique_id=717369475]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_NorthWall2/StaticBody3D" unique_id=1691531689]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_NorthWall2/StaticBody3D" unique_id=1003783162]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_qcvyx")
+
+[node name="Grove_SouthWall" type="Node3D" parent="." unique_id=2066422123]
+transform = Transform3D(7.794873, 0, 0, 0, 3.9441462, 0, 0, 0, 15.488015, -15.20136, 3.5802765, -12.278924)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_SouthWall" unique_id=1106580853]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_SouthWall/StaticBody3D" unique_id=1829791940]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_SouthWall/StaticBody3D" unique_id=1067509063]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_x6kbu")
+
+[node name="Grove_SouthWall2" type="Node3D" parent="." unique_id=285346660]
+transform = Transform3D(7.794873, 0, 0, 0, 3.9441462, 0, 0, 0, 15.488015, -15.20136, 3.5802765, 10.007811)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_SouthWall2" unique_id=1359036532]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_SouthWall2/StaticBody3D" unique_id=878578826]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_SouthWall2/StaticBody3D" unique_id=2049813201]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_x6kbu")
+
+[node name="Grove_BlackWall" type="Node3D" parent="." unique_id=1565752620]
+transform = Transform3D(7.794873, 0, 0, 0, 3.9441462, 0, 0, 0, 15.488015, -20.774944, 3.5802755, -1.6528454)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_BlackWall" unique_id=1612443334]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_BlackWall/StaticBody3D" unique_id=310323579]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_BlackWall/StaticBody3D" unique_id=259717580]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_gdcnv")
+
+[node name="Grove_BlackWall2" type="Node3D" parent="." unique_id=1739147361]
+transform = Transform3D(7.794873, 0, 0, 0, 3.9441462, 0, 0, 0, 4.0065284, -0.0587101, 3.5802755, -17.138378)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_BlackWall2" unique_id=1780832909]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_BlackWall2/StaticBody3D" unique_id=95776917]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_BlackWall2/StaticBody3D" unique_id=767777023]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_gdcnv")
+
+[node name="Grove_BlackWall3" type="Node3D" parent="." unique_id=206249417]
+transform = Transform3D(7.794873, 0, 0, 0, 3.9441462, 0, 0, 0, 4.0065284, 8.109225, 3.5802755, 16.079067)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_BlackWall3" unique_id=258366826]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_BlackWall3/StaticBody3D" unique_id=412028691]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_BlackWall3/StaticBody3D" unique_id=1797515465]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_gdcnv")
+
+[node name="Grove_BlackWall4" type="Node3D" parent="." unique_id=676396545]
+transform = Transform3D(4.093596, 0, 0, 0, 3.9441462, 0, 0, 0, 8.96972, 16.729626, 3.5802755, -3.7382202)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_BlackWall4" unique_id=1430256527]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_BlackWall4/StaticBody3D" unique_id=815967708]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_BlackWall4/StaticBody3D" unique_id=2100717985]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_gdcnv")
+
+[node name="Grove_GateTop" type="Node3D" parent="." unique_id=1339831633]
+transform = Transform3D(1.3154888, 0, 0, 0, 0.4243388, 0, 0, 0, 6.8177905, -15.728359, 5.310722, -1.0647614)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_GateTop" unique_id=1299782901]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_GateTop/StaticBody3D" unique_id=2088103073]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_GateTop/StaticBody3D" unique_id=2146266790]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_pca0e")
+
+[node name="Grove_GatePillar1" type="Node3D" parent="." unique_id=1404162743]
+transform = Transform3D(0.47459048, 0, 0, 0, 3.9441462, 0, 0, 0, 0.49980468, -15.5090065, 3.4677248, 1.937743)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_GatePillar1" unique_id=1549668621]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_GatePillar1/StaticBody3D" unique_id=958473593]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_GatePillar1/StaticBody3D" unique_id=423114242]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_y4o00")
+
+[node name="Grove_GatePillar2" type="Node3D" parent="." unique_id=743751202]
+transform = Transform3D(0.47459048, 0, 0, 0, 3.9441462, 0, 0, 0, 0.49980468, -15.5090065, 3.4677248, 1.1773698)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_GatePillar2" unique_id=917743535]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_GatePillar2/StaticBody3D" unique_id=3941233]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_GatePillar2/StaticBody3D" unique_id=1891068295]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_y4o00")
+
+[node name="Grove_GatePillar3" type="Node3D" parent="." unique_id=1920992580]
+transform = Transform3D(0.47459048, 0, 0, 0, 3.9441462, 0, 0, 0, 0.49980468, -15.5090065, 3.4677248, 0.36817074)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_GatePillar3" unique_id=1400678226]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_GatePillar3/StaticBody3D" unique_id=1142070187]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_GatePillar3/StaticBody3D" unique_id=1866686619]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_y4o00")
+
+[node name="Grove_GatePillar4" type="Node3D" parent="." unique_id=1602773246]
+transform = Transform3D(0.47459048, 0, 0, 0, 3.9441462, 0, 0, 0, 0.49980468, -15.5090065, 3.4677248, -0.39220238)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_GatePillar4" unique_id=94654231]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_GatePillar4/StaticBody3D" unique_id=488053743]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_GatePillar4/StaticBody3D" unique_id=520320033]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_y4o00")
+
+[node name="Grove_GatePillar5" type="Node3D" parent="." unique_id=756925653]
+transform = Transform3D(0.47459048, 0, 0, 0, 3.9441462, 0, 0, 0, 0.49980468, -15.5090065, 3.4677248, -1.1695893)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_GatePillar5" unique_id=96254679]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_GatePillar5/StaticBody3D" unique_id=1683043672]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_GatePillar5/StaticBody3D" unique_id=1394953233]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_y4o00")
+
+[node name="Grove_GatePillar6" type="Node3D" parent="." unique_id=297341540]
+transform = Transform3D(0.47459048, 0, 0, 0, 3.9441462, 0, 0, 0, 0.49980468, -15.5090065, 3.4677248, -1.9299624)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_GatePillar6" unique_id=465250745]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_GatePillar6/StaticBody3D" unique_id=1473985042]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_GatePillar6/StaticBody3D" unique_id=95675306]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_y4o00")
+
+[node name="Grove_GatePillar7" type="Node3D" parent="." unique_id=1256842664]
+transform = Transform3D(0.47459048, 0, 0, 0, 3.9441462, 0, 0, 0, 0.49980468, -15.5090065, 3.4677248, -2.7391615)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_GatePillar7" unique_id=484879041]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_GatePillar7/StaticBody3D" unique_id=104917970]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_GatePillar7/StaticBody3D" unique_id=1678962503]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_y4o00")
+
+[node name="Grove_GatePillar8" type="Node3D" parent="." unique_id=1738106240]
+transform = Transform3D(0.47459048, 0, 0, 0, 3.9441462, 0, 0, 0, 0.49980468, -15.5090065, 3.4677248, -3.4995346)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_GatePillar8" unique_id=1281675385]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_GatePillar8/StaticBody3D" unique_id=302142054]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_GatePillar8/StaticBody3D" unique_id=879091265]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_y4o00")
+
+[node name="Grove_GatePillar9" type="Node3D" parent="." unique_id=1096409110]
+transform = Transform3D(0.47459048, 0, 0, 0, 3.9441462, 0, 0, 0, 0.49980468, -15.5090065, 3.4677248, -4.1149015)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_GatePillar9" unique_id=361082964]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_GatePillar9/StaticBody3D" unique_id=2042173575]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_GatePillar9/StaticBody3D" unique_id=1454647007]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_y4o00")
+
+[node name="Grove_EastWall" type="Node3D" parent="." unique_id=890056031]
+transform = Transform3D(-0.030714437, 0, -21.008728, 0, 3.9441462, 0, 4.421582, 0, -0.14593673, -3.3409815, 3.5802765, 13.13961)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_EastWall" unique_id=1326040101]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_EastWall/StaticBody3D" unique_id=1504484855]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_EastWall/StaticBody3D" unique_id=1887244575]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_qcvyx")
+
+[node name="Grove_WestWall" type="Node3D" parent="." unique_id=855946791]
+transform = Transform3D(-0.035568766, 0, -9.32449, 0, 3.9441462, 0, 5.120401, 0, -0.06477239, -6.9814243, 3.5802765, -12.855591)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_WestWall" unique_id=1899703165]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_WestWall/StaticBody3D" unique_id=564804040]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_WestWall/StaticBody3D" unique_id=692842023]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_qcvyx")
+
+[node name="Grove_WestWall2" type="Node3D" parent="." unique_id=376363779]
+transform = Transform3D(-0.035568766, 0, -9.32449, 0, 3.9441462, 0, 5.120401, 0, -0.06477239, 6.8791924, 3.5802765, -12.855591)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_WestWall2" unique_id=2143807792]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_WestWall2/StaticBody3D" unique_id=2055434271]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_WestWall2/StaticBody3D" unique_id=972956942]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_qcvyx")
+
+[node name="Grove_TreeStump" type="Node3D" parent="." unique_id=1463806373]
+transform = Transform3D(-0.011991062, 0, -1.5744193, 0, 3.9441462, 0, 1.726207, 0, -0.010936673, -0.06939304, 3.3770967, 0.51388)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_TreeStump" unique_id=1054531901]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_TreeStump/StaticBody3D" unique_id=749687447]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_TreeStump/StaticBody3D" unique_id=465688648]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_v84nj")
+
+[node name="Grove_TreeTop" type="Node3D" parent="." unique_id=209539504]
+transform = Transform3D(-0.027030183, 0, -3.62646, 0, 2.899894, 0, 3.8912058, 0, -0.025191134, -0.06939304, 6.487128, 0.51388)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Grove_TreeTop" unique_id=1622398339]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_TreeTop/StaticBody3D" unique_id=1193096512]
+shape = SubResource("BoxShape3D_ir4d6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_TreeTop/StaticBody3D" unique_id=1377572452]
+mesh = SubResource("BoxMesh_ievnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_uralf")
+
+[node name="Loot" parent="." unique_id=1726042924 instance=ExtResource("3_ievnd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.646039, 2.3634615, -7.6904063)

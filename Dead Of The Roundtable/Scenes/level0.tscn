@@ -1,34 +1,59 @@
 [gd_scene format=3 uid="uid://p45tsv8wlq4o"]
 
 [ext_resource type="PackedScene" uid="uid://2d84vjeeqt4y" path="res://Scenes/player_spawner.tscn" id="1_8hgej"]
-[ext_resource type="PackedScene" uid="uid://com4bfxvbhe76" path="res://Scenes/zombie.tscn" id="1_ir4d6"]
+[ext_resource type="Texture2D" uid="uid://drksbh3ri70x4" path="res://Assets/Sprites/Grass_Fall.png" id="2_x6kbu"]
+[ext_resource type="Texture2D" uid="uid://cgbe7u8lxma42" path="res://Assets/Sprites/iron_fence.png" id="3_gdcnv"]
 [ext_resource type="PackedScene" uid="uid://cbhn18ceowcmr" path="res://Scenes/loot.tscn" id="3_ievnd"]
+[ext_resource type="Texture2D" uid="uid://kaih6ldkt8tj" path="res://Assets/Sprites/stone_floor.png" id="4_pca0e"]
+[ext_resource type="PackedScene" uid="uid://xerxkjwg8tql" path="res://Scenes/zombie_spawner.tscn" id="6_y4o00"]
+[ext_resource type="PackedScene" uid="uid://ck2o87hv8ojnr" path="res://Scenes/debug_ui.tscn" id="7_pca0e"]
+[ext_resource type="PackedScene" uid="uid://bvbxtf6nwtyp1" path="res://Scenes/hud.tscn" id="8_y4o00"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8hgej"]
-sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_v84nj"]
+sky_top_color = Color(0.63115484, 0.33989978, 0.24313575, 1)
+sky_horizon_color = Color(0.9597745, 0.80220354, 0.7018053, 1)
+ground_bottom_color = Color(0.6589115, 0.3198829, 0.015054047, 1)
+ground_horizon_color = Color(0.9597745, 0.80220354, 0.7018053, 1)
+energy_multiplier = 0.65
 
-[sub_resource type="Sky" id="Sky_ir4d6"]
-sky_material = SubResource("ProceduralSkyMaterial_8hgej")
+[sub_resource type="Sky" id="Sky_uralf"]
+sky_material = SubResource("ProceduralSkyMaterial_v84nj")
 
-[sub_resource type="Environment" id="Environment_ievnd"]
+[sub_resource type="Environment" id="Environment_svu7w"]
 background_mode = 2
-sky = SubResource("Sky_ir4d6")
-tonemap_mode = 2
+sky = SubResource("Sky_uralf")
+ambient_light_source = 3
+reflected_light_source = 2
+tonemap_mode = 3
 glow_enabled = true
+fog_light_color = Color(0.5561689, 0.20643565, 0.024786182, 1)
+fog_light_energy = 1.36
+volumetric_fog_enabled = true
+volumetric_fog_albedo = Color(0.689112, 0.32839057, 0.15380925, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ir4d6"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_ievnd"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2d57t"]
-albedo_color = Color(0.116214745, 0.326779, 0.10109133, 1)
+albedo_texture = ExtResource("2_x6kbu")
+uv1_scale = Vector3(64, 64, 1)
+texture_filter = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qcvyx"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
 albedo_color = Color(0.53333336, 0.53333336, 0.53333336, 1)
+albedo_texture = ExtResource("3_gdcnv")
+uv1_scale = Vector3(35.645, 2, 1)
+texture_filter = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x6kbu"]
 albedo_color = Color(0.5330367, 0.5330367, 0.5330367, 1)
+albedo_texture = ExtResource("4_pca0e")
+uv1_scale = Vector3(6.825, 3.575, 1)
+texture_filter = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gdcnv"]
 albedo_color = Color(0, 0, 0, 1)
@@ -43,31 +68,25 @@ albedo_color = Color(0.3328807, 0.33288068, 0.33288068, 1)
 albedo_color = Color(0.41518843, 0.29529157, 0.050519213, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uralf"]
-albedo_color = Color(0, 0.4392157, 0, 1)
+albedo_texture = ExtResource("2_x6kbu")
+texture_filter = 0
 
 [node name="Level0" type="Node3D" unique_id=936529965]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1443094989]
-environment = SubResource("Environment_ievnd")
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1262555984]
+transform = Transform3D(-0.33380687, -0.3728576, 0.86576563, 0, 0.91844636, 0.3955455, -0.9426415, 0.1320358, -0.3065837, 0, 0, 0)
+light_energy = 1.195
+light_volumetric_fog_energy = 0.93
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1155099201]
+environment = SubResource("Environment_svu7w")
 
 [node name="Node3D" type="Node3D" parent="." unique_id=1720449994]
 transform = Transform3D(24.710218, 0, 0, 0, 1, 0, 0, 0, 27.613094, 0, 0, 0)
 
 [node name="PlayerSpawner" parent="." unique_id=707410333 instance=ExtResource("1_8hgej")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.94689, 2.2888215, -0.91450214)
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1950057898]
-transform = Transform3D(0.0058119, 0.7114256, -0.7027375, -4.6767354e-09, 0.70274925, 0.7114377, 0.9999831, -0.004134819, 0.004084319, 0, 25.154585, 0)
-light_energy = 1.5
-
-[node name="Zombie" parent="." unique_id=1561199060 instance=ExtResource("1_ir4d6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3344922, 2.9381275, -12.255905)
-
-[node name="Zombie2" parent="." unique_id=332882544 instance=ExtResource("1_ir4d6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.078819, 2.9381275, 12.613814)
-
-[node name="Zombie3" parent="." unique_id=1194706092 instance=ExtResource("1_ir4d6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.67466, 2.9381275, -3.8224096)
 
 [node name="Grove_Floor" type="Node3D" parent="." unique_id=62594674]
 transform = Transform3D(48.630627, 0, 0, 0, 1.2480378, 0, 0, 0, 46.95318, 0, 1.1077775, 0)
@@ -78,6 +97,7 @@ transform = Transform3D(48.630627, 0, 0, 0, 1.2480378, 0, 0, 0, 46.95318, 0, 1.1
 shape = SubResource("BoxShape3D_ir4d6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_Floor/StaticBody3D" unique_id=297181843]
+transform = Transform3D(1, 0, 0, 0, 1.0000001, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_ievnd")
 surface_material_override/0 = SubResource("StandardMaterial3D_2d57t")
 
@@ -359,3 +379,25 @@ surface_material_override/0 = SubResource("StandardMaterial3D_uralf")
 
 [node name="Loot" parent="." unique_id=1726042924 instance=ExtResource("3_ievnd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.646039, 2.3634615, -7.6904063)
+
+[node name="ZombieSpawner" parent="." unique_id=571509086 instance=ExtResource("6_y4o00")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2408889, 1.7317953, -13.429206)
+
+[node name="ZombieSpawner2" parent="." unique_id=557180419 instance=ExtResource("6_y4o00")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.874264, 1.7317963, -3.963629)
+
+[node name="ZombieSpawner3" parent="." unique_id=1107652393 instance=ExtResource("6_y4o00")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.03185, 1.7317963, 12.776498)
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1914481868]
+follow_viewport_enabled = true
+
+[node name="DebugUI" parent="UI" unique_id=110358034 instance=ExtResource("7_pca0e")]
+
+[node name="Hud" parent="UI" unique_id=1583769511 instance=ExtResource("8_y4o00")]
+texture_filter = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1501233059]
+_spawnable_scenes = PackedStringArray("uid://dtwheaff3qch7", "uid://cq85x6ryq1343")
+spawn_path = NodePath("..")

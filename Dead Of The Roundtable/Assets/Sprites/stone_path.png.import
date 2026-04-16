@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dtbwy1d77hnyh"
-path.s3tc="res://.godot/imported/zombie_spawner_texture.png-ca288ccece82f0c285da1efb400d6e10.s3tc.ctex"
+uid="uid://56brmt8mb0d5"
+path.s3tc="res://.godot/imported/stone_path.png-b85a68694dbafafdf6e0d7b588f61167.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/Sprites/zombie_spawner_texture.png"
-dest_files=["res://.godot/imported/zombie_spawner_texture.png-ca288ccece82f0c285da1efb400d6e10.s3tc.ctex"]
+source_file="res://Assets/Sprites/stone_path.png"
+dest_files=["res://.godot/imported/stone_path.png-b85a68694dbafafdf6e0d7b588f61167.s3tc.ctex"]
 
 [params]
 

@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://xerxkjwg8tql"]
+
+[ext_resource type="Texture2D" uid="uid://dtbwy1d77hnyh" path="res://Assets/Sprites/zombie_spawner_texture.png" id="1_y6lrb"]
+[ext_resource type="Script" uid="uid://do7bobnosrd0d" path="res://Scripts/zombie_spawner.gd" id="2_ym14x"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ym14x"]
+albedo_texture = ExtResource("1_y6lrb")
+texture_filter = 2
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_jey18"]
+material = SubResource("StandardMaterial3D_ym14x")
+size = Vector2(1, 1)
+
+[node name="ZombieSpawner" type="MeshInstance3D" unique_id=571509086]
+mesh = SubResource("PlaneMesh_jey18")
+script = ExtResource("2_ym14x")

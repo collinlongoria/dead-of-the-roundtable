@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 DamageIndicator="*uid://dt5su8np0p7p8"
 LootDatabase="*uid://c7ot2eeenqmkb"
+RoundManager="*uid://b3bei2ic7gkxc"
 
 [display]
 

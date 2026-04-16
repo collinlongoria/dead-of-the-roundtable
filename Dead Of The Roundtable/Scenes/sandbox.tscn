@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://com4bfxvbhe76" path="res://Scenes/zombie.tscn" id="4_s2tkr"]
 [ext_resource type="PackedScene" uid="uid://crnlhmtd1tkbt" path="res://Scenes/dummy.tscn" id="5_1cu7a"]
 [ext_resource type="PackedScene" uid="uid://2d84vjeeqt4y" path="res://Scenes/player_spawner.tscn" id="6_koc8j"]
+[ext_resource type="PackedScene" uid="uid://xerxkjwg8tql" path="res://Scenes/zombie_spawner.tscn" id="7_wpw8k"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1cu7a"]
 sky_top_color = Color(0.39716098, 0.42456082, 0.6685972, 1)
@@ -93,3 +94,6 @@ spawn_path = NodePath("..")
 
 [node name="PlayerSpawner" parent="." unique_id=707410333 instance=ExtResource("6_koc8j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.289795, 1.0000002, 2.878599)
+
+[node name="ZombieSpawner" parent="." unique_id=571509086 instance=ExtResource("7_wpw8k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2264023, 1.6795039, -2.4111805)

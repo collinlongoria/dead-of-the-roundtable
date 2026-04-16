@@ -72,3 +72,20 @@ func _on_velocity_computed(safe_velocity: Vector3) -> void:
 		velocity.y -= 9.8 * get_physics_process_delta_time()
 	
 	move_and_slide()
+
+func _on_target_timer_timeout() -> void:
+	if not multiplayer.is_server() or not is_active:
+		return
+		
+	# Find all nodes currently in your target group (e.g., "targets")
+	var potential_targets = get_tree().get_nodes_in_group(target_group)
+	
+	if potential_targets.size() > 0:
+		# For now, we'll just grab the first target in the array. 
+		# You can easily update this later to find the closest target using distance_to()
+		target = potential_targets[0]
+		
+		# CRITICAL: Tell the NavigationAgent3D where it needs to pathfind to
+		nav_agent.target_position = target.global_position
+	else:
+		target = null

@@ -40,3 +40,6 @@ mesh = SubResource("BoxMesh_p5cyu")
 [node name="OutlineColorProxy" type="MeshInstance3D" parent="." unique_id=84786487]
 layers = 4
 mesh = SubResource("BoxMesh_p5cyu")
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="." unique_id=495178936]
+radius = 1.0

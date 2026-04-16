@@ -3,7 +3,6 @@
 [ext_resource type="PackedScene" uid="uid://ck2o87hv8ojnr" path="res://Scenes/debug_ui.tscn" id="1_56rqs"]
 [ext_resource type="PackedScene" uid="uid://bvbxtf6nwtyp1" path="res://Scenes/hud.tscn" id="2_utgw5"]
 [ext_resource type="Texture2D" uid="uid://kaih6ldkt8tj" path="res://Assets/Sprites/stone_floor.png" id="3_rlei8"]
-[ext_resource type="Material" uid="uid://bret6fh2tc5d7" path="res://Resources/Materials/outline_shader.tres" id="4_puce7"]
 [ext_resource type="PackedScene" uid="uid://cbhn18ceowcmr" path="res://Scenes/loot.tscn" id="5_rj37j"]
 [ext_resource type="PackedScene" uid="uid://crnlhmtd1tkbt" path="res://Scenes/dummy.tscn" id="6_8nl3u"]
 [ext_resource type="PackedScene" uid="uid://2d84vjeeqt4y" path="res://Scenes/player_spawner.tscn" id="7_8nl3u"]
@@ -30,7 +29,6 @@ tonemap_mode = 2
 ssao_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ftrnb"]
-next_pass = ExtResource("4_puce7")
 albedo_texture = ExtResource("3_rlei8")
 uv1_scale = Vector3(42.98, 42.98, 42.98)
 texture_filter = 2
@@ -44,7 +42,7 @@ size = Vector3(1.9760132, 0.50390625, 1.8807373)
 [node name="StatsTest" type="Node3D" unique_id=2023878474]
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=1182124626]
-transform = Transform3D(27.4, 0, 0, 0, 27.4, 0, 0, 0, 27.4, 0, 0.96467566, 0)
+transform = Transform3D(27.4, 0, 0, 0, 27.4, 0, 0, 0, 27.4, 0, 1.1311219, 0)
 navigation_mesh = SubResource("NavigationMesh_utscr")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=579994123]
@@ -78,7 +76,7 @@ mesh = SubResource("PlaneMesh_8nl3u")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0128479, -0.24804688, 0.022888184)
 shape = SubResource("BoxShape3D_utscr")
 
-[node name="Dummy" parent="." unique_id=1780045763 instance=ExtResource("6_8nl3u")]
+[node name="Dummy" parent="." unique_id=1780045763 groups=["targets"] instance=ExtResource("6_8nl3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5458443, 11.041178)
 
 [node name="PlayerSpawner" parent="." unique_id=707410333 instance=ExtResource("7_8nl3u")]
@@ -100,7 +98,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.159771, 2.4509115, 2.82597
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.707979, 2.4509115, 2.825974)
 
 [node name="ZombieSpawner2" parent="." unique_id=571509086 instance=ExtResource("9_rj37j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5934732, 1.2530582, -2.9569204)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5934732, 2.5233238, -2.9569204)
 
 [node name="ZombieSpawner" parent="." unique_id=1568882767 instance=ExtResource("9_rj37j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1694982, -2.6621323)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.481777, -2.6621323)

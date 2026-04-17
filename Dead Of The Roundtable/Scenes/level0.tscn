@@ -380,7 +380,6 @@ transform = Transform3D(-0.027030183, 0, -3.62646, 0, 2.899894, 0, 3.8912058, 0,
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_TreeTop/StaticBody3D" unique_id=1193096512]
 shape = SubResource("BoxShape3D_ir4d6")
-disabled = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_TreeTop/StaticBody3D" unique_id=1377572452]
 mesh = SubResource("BoxMesh_ievnd")

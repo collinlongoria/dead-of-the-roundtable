@@ -4,8 +4,7 @@
 
 [node name="FlowFieldManager" type="Node" unique_id=1573478776]
 script = ExtResource("1_yq6sx")
-width = 100
-depth = 100
+cell_size = 1.0
 origin = Vector3(-100, 0, -100)
 bake_on_ready = false
 debug_logs = true

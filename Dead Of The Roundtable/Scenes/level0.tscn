@@ -363,6 +363,7 @@ transform = Transform3D(-0.011991062, 0, -1.5744193, 0, 3.9441462, 0, 1.726207, 
 [node name="Node3D" type="Node3D" parent="Grove_TreeStump" unique_id=1996414962]
 transform = Transform3D(1.0000004, 0, 4.656613e-10, 0, 1.0000004, 0, -4.656613e-10, 0, 1.0000004, 0, 0, 0)
 script = ExtResource("5_y4o00")
+register_delay_frames = 5
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Grove_TreeStump" unique_id=1054531901]
 
@@ -380,6 +381,7 @@ transform = Transform3D(-0.027030183, 0, -3.62646, 0, 2.899894, 0, 3.8912058, 0,
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Grove_TreeTop/StaticBody3D" unique_id=1193096512]
 shape = SubResource("BoxShape3D_ir4d6")
+disabled = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Grove_TreeTop/StaticBody3D" unique_id=1377572452]
 mesh = SubResource("BoxMesh_ievnd")
@@ -411,3 +413,5 @@ _spawnable_scenes = PackedStringArray("uid://dtwheaff3qch7", "uid://cq85x6ryq134
 spawn_path = NodePath("..")
 
 [node name="FlowFieldDebug" parent="." unique_id=45847589 instance=ExtResource("10_v84nj")]
+visible = false
+enabled = false

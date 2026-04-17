@@ -72,9 +72,6 @@ func _ready() -> void:
 		_deferred_bake()
 
 func _deferred_bake() -> void:
-	# Wait N frames so the level scene and its colliders are fully instantiated.
-	# Autoloads ready before user scenes, and physics bodies need at least one
-	# physics tick to register with the space state.
 	for i in range(bake_delay_frames):
 		await get_tree().physics_frame
 	bake_heights()
@@ -269,8 +266,13 @@ func _integration_pass(targets: Array) -> void:
 		if not map_data.in_bounds(cell.x, cell.y):
 			continue
 		var idx := map_data.get_index(cell.x, cell.y)
+		
 		if map_data.cost_field[idx] == 255:
-			continue
+			var fallback := _find_nearest_walkable_cell(cell)
+			if fallback.x < 0:
+				continue
+			idx = map_data.get_index(fallback.x, fallback.y)
+		
 		map_data.integration_field[idx] = 0
 		_bfs_queue.push_back(idx)
 	
@@ -306,6 +308,29 @@ func _integration_pass(targets: Array) -> void:
 			if next_cost < map_data.integration_field[n_idx]:
 				map_data.integration_field[n_idx] = next_cost
 				_bfs_queue.push_back(n_idx)
+
+func _find_nearest_walkable_cell(start: Vector2i) -> Vector2i:
+	const MAX_RING := 8
+	var start_idx := map_data.get_index(start.x, start.y)
+	var start_h: float = map_data.height_map[start_idx]
+	var has_start_h := start_h > ABYSS_SENTINEL + 1.0
+	
+	for r in range(1, MAX_RING + 1):
+		for dz in range(-r, r + 1):
+			for dx in range(-r, r + 1):
+				if absi(dx) != r and absi(dz) != r:
+					continue
+				var nx: int = start.x + dx
+				var nz: int = start.y + dz
+				if not map_data.in_bounds(nx, nz):
+					continue
+				var n_idx: int = map_data.get_index(nx, nz)
+				if map_data.cost_field[n_idx] == 255:
+					continue
+				if has_start_h and absf(map_data.height_map[n_idx] - start_h) > map_data.max_step_height:
+					continue
+				return Vector2i(nx, nz)
+	return Vector2i(-1, -1)
 
 func _vector_pass() -> void:
 	var w := map_data.width
@@ -351,6 +376,37 @@ func _vector_pass() -> void:
 				map_data.flow_field[idx] = Vector2(best_dx, best_dz).normalized()
 
 func get_flow_at_world(world_pos: Vector3) -> Vector2:
+	var local_x: float = (world_pos.x - map_data.origin.x) / map_data.cell_size - 0.5
+	var local_z: float = (world_pos.z - map_data.origin.z) / map_data.cell_size - 0.5
+	
+	var x0 := int(floor(local_x))
+	var z0 := int(floor(local_z))
+	var fx: float = local_x - float(x0)
+	var fz: float = local_z - float(z0)
+	
+	var v00 := _sample_flow_cell(x0,     z0)
+	var v10 := _sample_flow_cell(x0 + 1, z0)
+	var v01 := _sample_flow_cell(x0,     z0 + 1)
+	var v11 := _sample_flow_cell(x0 + 1, z0 + 1)
+	
+	var top: Vector2    = v00.lerp(v10, fx)
+	var bottom: Vector2 = v01.lerp(v11, fx)
+	var blended: Vector2 = top.lerp(bottom, fz)
+	
+	if blended.length_squared() < 0.0001:
+		return _get_flow_single_cell(world_pos)
+	
+	return blended.normalized()
+
+func _sample_flow_cell(x: int, z: int) -> Vector2:
+	if not map_data.in_bounds(x, z):
+		return Vector2.ZERO
+	var idx := map_data.get_index(x, z)
+	if map_data.cost_field[idx] == 255:
+		return Vector2.ZERO
+	return map_data.flow_field[idx]
+
+func _get_flow_single_cell(world_pos: Vector3) -> Vector2:
 	var cell := map_data.world_to_cell(world_pos)
 	if not map_data.in_bounds(cell.x, cell.y):
 		return Vector2.ZERO
@@ -359,11 +415,9 @@ func get_flow_at_world(world_pos: Vector3) -> Vector2:
 	if flow.length_squared() > 0.0001:
 		return flow
 	
-	# Fallback: cell is zero (obstacle, unreached, or target cell itself).
-	# Find the neighbor with the lowest integration cost and point toward it.
-	var best_cost := map_data.integration_field[idx]
-	if best_cost == UINT16_MAX:
-		best_cost = UINT16_MAX
+	var best_cost: int = UINT16_MAX
+	if map_data.cost_field[idx] != 255:
+		best_cost = map_data.integration_field[idx]
 	var best_dx := 0
 	var best_dz := 0
 	var w := map_data.width

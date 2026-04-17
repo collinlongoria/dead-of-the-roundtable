@@ -20,8 +20,6 @@ properties/1/replication_mode = 1
 
 [node name="Zombie" type="CharacterBody3D" unique_id=332882544]
 script = ExtResource("1_h3kin")
-debug_draw = true
-debug_logs = true
 
 [node name="ZombieMesh" type="MeshInstance3D" parent="." unique_id=1050177329]
 mesh = SubResource("CapsuleMesh_h3kin")

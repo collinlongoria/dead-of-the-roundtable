@@ -45,3 +45,4 @@ mesh = SubResource("BoxMesh_p5cyu")
 [node name="FlowFieldObstacle" type="Node3D" parent="." unique_id=1061615878]
 script = ExtResource("5_h4ol7")
 dynamic = true
+register_delay_frames = 5

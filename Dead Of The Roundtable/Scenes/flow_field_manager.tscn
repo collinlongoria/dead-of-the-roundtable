@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bo8hhw5dvfjeq"]
+
+[ext_resource type="Script" uid="uid://rhyr0hij4yds" path="res://Scripts/Pathfinding/flow_field_manager.gd" id="1_yq6sx"]
+
+[node name="FlowFieldManager" type="Node" unique_id=1573478776]
+script = ExtResource("1_yq6sx")
+width = 100
+depth = 100
+origin = Vector3(-100, 0, -100)
+bake_on_ready = false
+debug_logs = true

@@ -10,7 +10,6 @@ var peer: ENetMultiplayerPeer
 @onready var join_button: Button = $UI/VBoxContainer/JoinButton
 @onready var address_entry: LineEdit = $UI/VBoxContainer/AddressEntry
 
-# level to load
 @export var world_scene: PackedScene
 var current_world: Node
 
@@ -30,13 +29,11 @@ func _on_host_pressed() -> void:
 		
 	multiplayer.multiplayer_peer = peer
 	
-	# Since we are hosting, we need to listen for new clients connecting
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	
 	_start_game()
 	
-	# The host is always peer ID 1
 	_spawn_player(1)
 
 func _on_join_pressed() -> void:
@@ -59,8 +56,16 @@ func _start_game() -> void:
 	if world_scene:
 		current_world = world_scene.instantiate()
 		add_child(current_world)
+		
+		if multiplayer.is_server():
+			_bake_flow_field_when_ready()
 
-# Only the host runs this when a new client connects
+func _bake_flow_field_when_ready() -> void:
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	FlowFieldManager.bake_heights()
+	RoundManager.start()
+
 func _on_peer_connected(id: int) -> void:
 	print("Player connected with ID: ", id)
 	_spawn_player(id)

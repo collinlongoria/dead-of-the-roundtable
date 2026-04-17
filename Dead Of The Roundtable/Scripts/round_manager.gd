@@ -1,6 +1,5 @@
 extends Node
 
-# API
 var current_round: int = 0
 var total_zombies_this_round: int = 0
 var zombies_remaining_to_spawn: int = 0
@@ -14,10 +13,14 @@ var active_zombies_on_map: int = 0
 
 var enemy_pool: Array[BaseEnemy] = []
 var spawn_timer: Timer
+var _started: bool = false
 
-func _ready() -> void:
+func start() -> void:
+	if _started:
+		return
 	if not multiplayer.is_server():
 		return
+	_started = true
 	
 	_initialize_pool()
 	
@@ -27,27 +30,36 @@ func _ready() -> void:
 	
 	call_deferred("start_next_round")
 
+func reset() -> void:
+	if spawn_timer:
+		spawn_timer.stop()
+	for enemy in enemy_pool:
+		if is_instance_valid(enemy):
+			enemy.queue_free()
+	enemy_pool.clear()
+	current_round = 0
+	total_zombies_this_round = 0
+	zombies_remaining_to_spawn = 0
+	active_zombies_on_map = 0
+	_started = false
+
 func _initialize_pool() -> void:
 	for i in range(pool_size):
-			# For now, pick a random enemy type from your array to add to the pool
-			var random_scene = enemy_scenes.pick_random()
-			var enemy: BaseEnemy = random_scene.instantiate()
-			
-			enemy.died.connect(_on_enemy_died)
-			add_child(enemy)
-			enemy_pool.append(enemy)
+		var random_scene = enemy_scenes.pick_random()
+		var enemy: BaseEnemy = random_scene.instantiate()
+		
+		enemy.died.connect(_on_enemy_died)
+		add_child(enemy)
+		enemy_pool.append(enemy)
 
 func start_next_round() -> void:
 	current_round += 1
 	print("--- ROUND ", current_round, " STARTING ---")
 	
-	# COD Zombies math: calculate total zombies based on round and player count
-	# You can tweak this formula to your liking
 	total_zombies_this_round = int(base_zombies * pow(round_multiplier, current_round - 1))
 	zombies_remaining_to_spawn = total_zombies_this_round
 	active_zombies_on_map = 0
 	
-	# Semi-random spawn rate (gets faster in later rounds)
 	spawn_timer.wait_time = max(0.5, 2.5 - (current_round * 0.1))
 	spawn_timer.start()
 
@@ -57,7 +69,6 @@ func _on_spawn_timer_timeout() -> void:
 		return
 		
 	if active_zombies_on_map >= pool_size:
-		# Map is full, wait for some to die
 		return
 		
 	_spawn_zombie()
@@ -81,13 +92,10 @@ func _get_inactive_zombie() -> BaseEnemy:
 func _on_enemy_died(_enemy: BaseEnemy) -> void:
 	active_zombies_on_map -= 1
 	
-	# Check if round is over
 	if active_zombies_on_map == 0 and zombies_remaining_to_spawn == 0:
 		print("Round ", current_round, " completed!")
-		# Wait a few seconds before starting the next round
 		get_tree().create_timer(5.0).timeout.connect(start_next_round)
 
-# --- SPAWN SELECTION LOGIC ---
 func _get_best_spawn_position() -> Vector3:
 	var spawners = get_tree().get_nodes_in_group("spawners")
 	var players = get_tree().get_nodes_in_group(player_group)
@@ -101,7 +109,6 @@ func _get_best_spawn_position() -> Vector3:
 		
 	var spawner_distances = []
 	
-	# Calculate distance from each spawner to its nearest player
 	for spawner in spawners:
 		var min_dist = INF
 		for player in players:
@@ -109,19 +116,15 @@ func _get_best_spawn_position() -> Vector3:
 			if dist < min_dist:
 				min_dist = dist
 		
-		# We don't want spawners that are TOO close (e.g., right on top of them)
-		if min_dist > 10.0: # Minimum spawn distance 
+		if min_dist > 10.0:
 			spawner_distances.append({"spawner": spawner, "distance": min_dist})
 			
-	# Sort by distance (closest first)
 	spawner_distances.sort_custom(func(a, b): return a.distance < b.distance)
 	
-	# Pick randomly from the top 3 closest valid spawners
 	var top_spawners = spawner_distances.slice(0, 3)
 	
 	if top_spawners.size() > 0:
 		var chosen = top_spawners.pick_random()
 		return chosen.spawner.global_position
 		
-	# Fallback if somehow no spawners are valid
 	return spawners.pick_random().global_position

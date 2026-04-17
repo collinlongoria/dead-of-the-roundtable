@@ -7,11 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://crnlhmtd1tkbt" path="res://Scenes/dummy.tscn" id="6_8nl3u"]
 [ext_resource type="PackedScene" uid="uid://2d84vjeeqt4y" path="res://Scenes/player_spawner.tscn" id="7_8nl3u"]
 [ext_resource type="PackedScene" uid="uid://dht66w7fqgd55" path="res://Scenes/lava_tile.tscn" id="8_utscr"]
+[ext_resource type="PackedScene" uid="uid://bcd33ypddproc" path="res://Scenes/flow_field_debug.tscn" id="9_jyof7"]
 [ext_resource type="PackedScene" uid="uid://xerxkjwg8tql" path="res://Scenes/zombie_spawner.tscn" id="9_rj37j"]
-
-[sub_resource type="NavigationMesh" id="NavigationMesh_utscr"]
-vertices = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, -1)
-polygons = [PackedInt32Array(0, 1, 2), PackedInt32Array(1, 3, 2)]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rlei8"]
 sky_top_color = Color(0.39716098, 0.42456082, 0.6685972, 1)
@@ -36,14 +33,10 @@ texture_filter = 2
 [sub_resource type="PlaneMesh" id="PlaneMesh_8nl3u"]
 material = SubResource("StandardMaterial3D_ftrnb")
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_utscr"]
-size = Vector3(1.9760132, 0.50390625, 1.8807373)
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_rj37j"]
+data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
 
 [node name="StatsTest" type="Node3D" unique_id=2023878474]
-
-[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=1182124626]
-transform = Transform3D(27.4, 0, 0, 0, 27.4, 0, 0, 0, 27.4, 0, 1.1311219, 0)
-navigation_mesh = SubResource("NavigationMesh_utscr")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=579994123]
 environment = SubResource("Environment_puce7")
@@ -72,15 +65,14 @@ transform = Transform3D(27.4, 0, 0, 0, 27.4, 0, 0, 0, 27.4, 0, 0.96467566, 0)
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1978550456]
 mesh = SubResource("PlaneMesh_8nl3u")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=2123312885]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0128479, -0.24804688, 0.022888184)
-shape = SubResource("BoxShape3D_utscr")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1372884248]
+shape = SubResource("ConcavePolygonShape3D_rj37j")
 
 [node name="Dummy" parent="." unique_id=1780045763 groups=["targets"] instance=ExtResource("6_8nl3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5458443, 11.041178)
 
 [node name="PlayerSpawner" parent="." unique_id=707410333 instance=ExtResource("7_8nl3u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.622633, 15.701743)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.99157715, 15.701743)
 
 [node name="LavaTile" parent="." unique_id=1715686303 instance=ExtResource("8_utscr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05105, 8.350797)
@@ -98,7 +90,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.159771, 2.4509115, 2.82597
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.707979, 2.4509115, 2.825974)
 
 [node name="ZombieSpawner2" parent="." unique_id=571509086 instance=ExtResource("9_rj37j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5934732, 2.5233238, -2.9569204)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5934732, 1.0329659, -2.9569204)
 
 [node name="ZombieSpawner" parent="." unique_id=1568882767 instance=ExtResource("9_rj37j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.481777, -2.6621323)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9914191, -2.6621323)
+
+[node name="FlowFieldDebug" parent="." unique_id=45847589 instance=ExtResource("9_jyof7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.342556, 2.630431, -7.863944)
+show_integration = true

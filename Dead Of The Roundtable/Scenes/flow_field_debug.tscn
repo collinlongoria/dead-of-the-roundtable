@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bcd33ypddproc"]
+
+[ext_resource type="Script" uid="uid://dls51f34aebvk" path="res://Scripts/Pathfinding/flow_field_debug.gd" id="1_exp41"]
+
+[node name="FlowFieldDebug" type="Node3D" unique_id=45847589]
+script = ExtResource("1_exp41")
+draw_around_camera = false

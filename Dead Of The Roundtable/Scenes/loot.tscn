@@ -4,6 +4,7 @@
 [ext_resource type="Shader" uid="uid://dhotk12hfeja8" path="res://Resources/Materials/proxy_smuggler.gdshader" id="2_dvcho"]
 [ext_resource type="Texture2D" uid="uid://b4bl3cmwy0cut" path="res://Assets/Sprites/helmet_legendary.png" id="2_lk60n"]
 [ext_resource type="Shader" uid="uid://bh1m4w5ce8d3h" path="res://Resources/Materials/proxy_color.gdshader" id="3_lk60n"]
+[ext_resource type="Script" uid="uid://c5iqtag1pk0th" path="res://Scripts/Pathfinding/flow_field_obstacle.gd" id="5_h4ol7"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h4ol7"]
 
@@ -41,5 +42,6 @@ mesh = SubResource("BoxMesh_p5cyu")
 layers = 4
 mesh = SubResource("BoxMesh_p5cyu")
 
-[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="." unique_id=495178936]
-radius = 1.0
+[node name="FlowFieldObstacle" type="Node3D" parent="." unique_id=1061615878]
+script = ExtResource("5_h4ol7")
+dynamic = true

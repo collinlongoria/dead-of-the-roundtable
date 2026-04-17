@@ -5,12 +5,11 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iwcbr"]
 albedo_texture = ExtResource("1_qn1mc")
-uv1_scale = Vector3(6, 6, 6)
-texture_filter = 0
 
-[sub_resource type="BoxMesh" id="BoxMesh_o4mbg"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_o4mbg"]
 material = SubResource("StandardMaterial3D_iwcbr")
+size = Vector2(1, 1)
 
 [node name="PlayerSpawner" type="MeshInstance3D" unique_id=707410333]
-mesh = SubResource("BoxMesh_o4mbg")
+mesh = SubResource("PlaneMesh_o4mbg")
 script = ExtResource("2_iwcbr")

@@ -1,14 +1,10 @@
 [gd_scene format=3 uid="uid://cj0qa6mtcm1m4"]
 
 [ext_resource type="Texture2D" uid="uid://dvyc0hw8i5rog" path="res://icon.svg" id="1_mv1l4"]
-[ext_resource type="Texture2D" uid="uid://br7xcfjxtfo03" path="res://Assets/Sprites/Lava.png" id="2_q7drg"]
 [ext_resource type="Script" uid="uid://chkpgk47837un" path="res://Scripts/health_wrapper.gd" id="2_tsvmt"]
 [ext_resource type="FontFile" uid="uid://dxwtbcclixi84" path="res://Assets/Fonts/Bathrind.otf" id="3_q7drg"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mv1l4"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_32wjl"]
-texture = ExtResource("2_q7drg")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_32wjl"]
 bg_color = Color(0.099985994, 0.09998601, 0.099985965, 1)
@@ -67,14 +63,6 @@ expand_mode = 1
 [node name="Control" type="Control" parent="HBoxContainer" unique_id=318715339]
 layout_mode = 2
 size_flags_horizontal = 0
-
-[node name="TextureRect" type="Panel" parent="HBoxContainer/Control" unique_id=181414223]
-custom_minimum_size = Vector2(220, 60)
-layout_mode = 0
-offset_left = -4.0
-offset_right = 216.0
-offset_bottom = 60.0
-theme_override_styles/panel = SubResource("StyleBoxTexture_32wjl")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Control" unique_id=1557362186]
 layout_mode = 0

@@ -2,7 +2,7 @@ extends RigidBody3D
 class_name LootDrop
 
 @export var outline_color: Color = Color(0.2, 0.8, 0.2, 1.0)
-@export var outline_color2: Color = Color(0.757, 0.253, 0.09, 1.0)
+@export var outline_color2: Color = Color(0.998, 0.914, 0.89, 1.0)
 @export var hover_multiplier: float = 13.0
 @export var depth_proxy_shader: Shader
 @export var color_proxy_shader: Shader

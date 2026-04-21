@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://cnr4aaxncpjvc"]
+
+[ext_resource type="Script" uid="uid://7gwwck7jyoxp" path="res://Scripts/loot_scroll.gd" id="1_o2882"]
+
+[node name="LootScroll" type="Control" unique_id=2023290762]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_o2882")
+num_rows = 10
+horizontal_spacing = 0.0
+vertical_spacing = 120.0
+spawn_interval = 2.0

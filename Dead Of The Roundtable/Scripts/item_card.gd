@@ -5,7 +5,7 @@ class_name ItemCard
 @export var perk_labels: Array[RichTextLabel]
 
 @onready var title_label: Label = $Background/AlignmentContainer/Container/NameLabel
-@onready var icon_rect: TextureRect = $Background/AlignmentContainer/Container/TextureRect
+@onready var icon_rect: TextureRect = $Background/AlignmentContainer/Container/HBoxContainer/TextureRect
 
 func setup_card(item: LootItem, player: CharacterBody3D = null) -> void:
 	title_label.text = item.item_name
@@ -47,17 +47,18 @@ func setup_card(item: LootItem, player: CharacterBody3D = null) -> void:
 				elif new_val < old_val:
 					color_tag = "[color=red]"
 			
-			# Wrap the existing line in the BBCode color block
+			# Wrap the existing line
 			stat_labels[i].text = color_tag + base_text + "[/color]"
 			stat_labels[i].show()
 		else:
 			stat_labels[i].hide()
 			
-	# Distribute Perks (Unchanged)
+	# Distribute Perks
 	var perk_lines = item.get_perk_lines()
+	var perk_descs = item.get_perk_descs()
 	for i in range(perk_labels.size()):
 		if i < perk_lines.size():
-			perk_labels[i].text = perk_lines[i]
+			perk_labels[i].text = perk_lines[i] + ": " + perk_descs[i]
 			perk_labels[i].show()
 		else:
 			perk_labels[i].hide()

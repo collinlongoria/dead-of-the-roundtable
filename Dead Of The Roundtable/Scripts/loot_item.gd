@@ -33,6 +33,14 @@ func get_perk_lines() -> Array[String]:
 	
 	return lines
 
+func get_perk_descs() -> Array[String]:
+	var lines: Array[String] = []
+	
+	for perk in perks:
+		lines.append(perk.perk_desc)
+	
+	return lines
+
 func to_dict() -> Dictionary:
 	var perk_data: Array = []
 	for perk in perks:
